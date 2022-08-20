@@ -24,6 +24,10 @@
   "editor.formatOnPaste": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
+  "[handlebars]": {
+    "editor.formatOnSave": false,
+    "editor.formatOnPaste": false
+  },
   "search.exclude": {
     ".git": true,
     ".eslintcache": true,
