@@ -1,4 +1,6 @@
-type TextInputProps = React.InputHTMLAttributes<HTMLInputElement>;
+interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  errored?: boolean;
+}
 
 const TextInput = ({
   name,
@@ -7,6 +9,7 @@ const TextInput = ({
   onChange,
   className,
   value,
+  errored,
 }: TextInputProps) => {
   return (
     <input
@@ -27,6 +30,11 @@ const TextInput = ({
               focus:ring-2
     ring-gray-700
               ring-offset-current ring-offset-2
+              ${
+                errored
+                  ? 'border-red-500 right-2 outline-red-600 shadow-outline-red-500 '
+                  : ''
+              }
               ${className}
       `}
       onChange={onChange}
@@ -35,4 +43,7 @@ const TextInput = ({
   );
 };
 
+TextInput.defaultProps = {
+  errored: false,
+};
 export default TextInput;

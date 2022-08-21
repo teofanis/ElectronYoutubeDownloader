@@ -22,6 +22,7 @@ const Button = ({
        focus:ring-2
        ring-offset-current ring-offset-2
       ring-gray-700
+      disabled:opacity-50 disabled:cursor-not-allowed
       ${className}`}
       type={type}
       onClick={onClick}

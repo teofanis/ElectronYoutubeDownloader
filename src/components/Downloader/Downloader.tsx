@@ -1,21 +1,39 @@
-import { FileInput, TextInput } from 'components';
-import { DownloadButton } from 'components/DownloadButton';
+import { DownloadButton, FileInput, InputError, TextInput } from 'components';
 import { useState } from 'react';
+import { validateYoutubeLink } from 'utils';
 
 const Downloader = () => {
   const [url, setUrl] = useState('');
+  const [urlError, setUrlError] = useState('');
+
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUrl(e.target.value);
+    const link = e.target.value.trim();
+
+    if (link !== '' && !validateYoutubeLink(link)) {
+      setUrlError('Invalid Youtube URL entered');
+      return;
+    }
+    setUrlError('');
+    setUrl(link);
   };
+
+  const downloadClickHandler = () => {
+    console.log('Downloading...');
+  };
+
+  const disableDownloadButton = Boolean(urlError) || !url;
   return (
     <div className="max-w-[1500px] mt-10">
       <div className="flex items-baseline space-x-4 justify-around">
-        <TextInput
-          name="url"
-          value={url}
-          onChange={urlChangeHandler}
-          placeholder="Enter Youtube URL"
-        />
+        <div className="flex flex-wrap flex-1">
+          <TextInput
+            name="url"
+            onChange={urlChangeHandler}
+            placeholder="Enter Youtube URL"
+            errored={Boolean(urlError)}
+          />
+          <InputError error={urlError} />
+        </div>
         <span className="flex font-semibold text-white text-xl">OR</span>
         <div className="flex flex-1">
           <FileInput name="sourceList" label="Choose a File" id="sourceList" />
@@ -24,7 +42,11 @@ const Downloader = () => {
       <hr className="mt-10" />
 
       <div className="flex justify-center mt-10">
-        <DownloadButton text="Download" />
+        <DownloadButton
+          text="Download"
+          onClick={downloadClickHandler}
+          disabled={disableDownloadButton}
+        />
       </div>
     </div>
   );

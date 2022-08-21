@@ -7,6 +7,7 @@ import { TextInput } from 'components/TextInput';
 import { FileInput } from 'components/FileInput';
 import { Button } from 'components/Button';
 import { DownloadButton } from 'components/DownloadButton';
+import { InputError } from 'components/InputError';
 // Automatic import of components
 export {
   Layout,
@@ -17,5 +18,6 @@ export {
   FileInput,
   Button,
   DownloadButton,
+  InputError,
   // Automatic export of components
 };
