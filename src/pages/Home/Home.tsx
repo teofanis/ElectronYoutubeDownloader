@@ -1,11 +1,14 @@
-import { Heading, Layout } from 'components';
-import icon from '../../../assets/icon.png';
+import { Heading, Layout, Logo } from 'components';
 
 const Home = () => {
   return (
     <Layout>
-      <img className="max-w-[300px]" src={icon} alt="Logo" />
-      <Heading>Youtube Downloader</Heading>
+      <div className="flex flex-col h-[100vh] mt-[10%]">
+        <div className="flex items-center justify-center space-x-4">
+          <Logo className="h-[125px]" />
+          <Heading>Youtube Downloader</Heading>
+        </div>
+      </div>
     </Layout>
   );
 };
