@@ -1,6 +1,7 @@
 import { DownloadButton, FileInput, InputError, TextInput } from 'components';
 import { useState } from 'react';
 import { validateYoutubeLink } from 'utils';
+import { downloadMP3 } from '../../libs/youtube-dl';
 
 const Downloader = () => {
   const [url, setUrl] = useState('');
@@ -19,6 +20,9 @@ const Downloader = () => {
 
   const downloadClickHandler = () => {
     console.log('Downloading...');
+    downloadMP3(url)
+      .then((result) => console.log(result))
+      .catch((error) => console.log(error));
   };
 
   const disableDownloadButton = Boolean(urlError) || !url;
