@@ -1,4 +1,4 @@
-import { Heading, Layout, Logo } from 'components';
+import { Downloader, Heading, Layout, Logo } from 'components';
 
 const Home = () => {
   return (
@@ -8,6 +8,8 @@ const Home = () => {
           <Logo className="h-[125px]" />
           <Heading>Youtube Downloader</Heading>
         </div>
+
+        <Downloader />
       </div>
     </Layout>
   );

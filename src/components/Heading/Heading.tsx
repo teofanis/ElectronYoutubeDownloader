@@ -9,9 +9,7 @@ const Heading = ({ children }: HeadingProps) => {
       className="font-semibold text-5xl text-transparent animate-gradient-x bg-gradient-to-r from-primary-black via-white to-primary-red tracking-tight"
       style={{
         // Work-around for electron
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        '-webkit-background-clip': 'text',
+        WebkitBackgroundClip: 'text',
       }}
     >
       {children}

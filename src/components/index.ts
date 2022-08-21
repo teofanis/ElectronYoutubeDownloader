@@ -5,6 +5,8 @@ import { Layout } from 'components/Layout';
 import { Logo } from 'components/Logo';
 import { TextInput } from 'components/TextInput';
 import { FileInput } from 'components/FileInput';
+import { Button } from 'components/Button';
+import { DownloadButton } from 'components/DownloadButton';
 // Automatic import of components
 export {
   Layout,
@@ -13,5 +15,7 @@ export {
   Downloader,
   TextInput,
   FileInput,
+  Button,
+  DownloadButton,
   // Automatic export of components
 };
