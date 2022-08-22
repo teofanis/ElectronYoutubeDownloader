@@ -1,11 +1,52 @@
 /* eslint-disable import/prefer-default-export */
-// eslint-disable import/prefer-default-export
-// const youtubedl = require('youtube-dl-exec');
-import youtubedl from 'youtube-dl-exec';
+import fs from 'fs';
+import path from 'path';
+import ytdl from 'ytdl-core';
 
 export async function downloadMP3(youtubeLink: string) {
-  return youtubedl(youtubeLink, {
-    extractAudio: true,
-    audioFormat: 'mp3',
+  return new Promise((resolve, reject) => {
+    return (
+      ytdl
+        .getInfo(youtubeLink, {
+          quality: 'highestaudio',
+        })
+        // eslint-disable-next-line promise/always-return
+        .then((resource) => {
+          const { videoDetails } = resource;
+          const { title } = videoDetails;
+          const audioStream = ytdl.downloadFromInfo(resource, {
+            quality: 'highestaudio',
+          });
+
+          audioStream.on('response', (response) => {
+            const fileSize = response.headers['content-length'];
+            let downloaded = 0;
+            response.on('data', (data: string | any[]) => {
+              downloaded += data.length;
+              const percentage = ((downloaded / fileSize) * 100).toFixed(2);
+              console.log(`Percentage ${percentage}`);
+            });
+          });
+
+          audioStream.on('error', () => {
+            reject(new Error(`Failed to download ${title}`));
+          });
+
+          audioStream.on('end', () => {
+            resolve(`${title} was downloaded successfully!`);
+          });
+
+          audioStream.pipe(
+            fs.createWriteStream(
+              path.join(`${__dirname}../../`, `${title}.mp3`)
+            )
+          );
+        })
+        .catch((error) => {
+          console.log('WTF');
+          reject(error);
+        })
+        .finally(() => console.log('It is what it is...'))
+    );
   });
 }
