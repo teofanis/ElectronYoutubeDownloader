@@ -1,8 +1,10 @@
 import { DownloadButton, FileInput, InputError, TextInput } from 'components';
+// import { ipcRenderer } from 'electron';
 import { useState } from 'react';
 import { validateYoutubeLink } from 'utils';
-import { downloadMP3 } from '../../libs/youtube-dl';
+import { CONSTANTS } from 'utils/constants';
 
+const { ipcRenderer } = window.electron;
 const Downloader = () => {
   const [url, setUrl] = useState('');
   const [urlError, setUrlError] = useState('');
@@ -20,9 +22,9 @@ const Downloader = () => {
 
   const downloadClickHandler = () => {
     console.log('Downloading...');
-    downloadMP3(url)
-      .then((result) => console.log(result))
-      .catch((error) => console.log(error));
+    ipcRenderer.sendMessage(CONSTANTS.DOWNLOAD, {
+      url,
+    });
   };
 
   const disableDownloadButton = Boolean(urlError) || !url;

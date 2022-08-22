@@ -1,6 +1,8 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example';
+import { CONSTANTS } from '../utils/constants';
+
+export type Channels = keyof typeof CONSTANTS | 'ipc-example';
 
 contextBridge.exposeInMainWorld('electron', {
   ipcRenderer: {

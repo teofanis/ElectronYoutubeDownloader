@@ -8,10 +8,12 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import log from 'electron-log';
+import { autoUpdater } from 'electron-updater';
+import path from 'path';
+import { downloadMP3 } from '../libs/youtube-dl';
+import { CONSTANTS } from '../utils/constants';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -136,3 +138,11 @@ app
     });
   })
   .catch(console.log);
+
+ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
+  const { url, savePath } = arg;
+  console.log(event, arg, url, savePath);
+  downloadMP3(url)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+});
