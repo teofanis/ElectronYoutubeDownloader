@@ -20,8 +20,16 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
             quality: 'highestaudio',
           });
 
+          const cancelDownload = () => audioStream.destroy();
           audioStream.on('response', (response) => {
             const fileSize = response.headers['content-length'];
+            win.webContents.send(CONSTANTS.CURRENT_DOWNLOAD_META_DATA, {
+              fileSize,
+              title,
+              videoDetails,
+              audioStream,
+              cancel: cancelDownload,
+            });
             let downloaded = 0;
             response.on('data', (data: string | any[]) => {
               downloaded += data.length;
@@ -37,6 +45,10 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
 
           audioStream.on('end', () => {
             resolve(`${title} was downloaded successfully!`);
+          });
+
+          audioStream.on('close', () => {
+            resolve(`${title} download was cancelled`);
           });
 
           audioStream.pipe(

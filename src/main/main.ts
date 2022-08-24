@@ -142,7 +142,7 @@ app
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url, savePath } = arg;
   // console.log(event, arg, url, savePath);
-  downloadMP3(url, mainWindow)
+  downloadMP3(url, mainWindow as BrowserWindow)
     .then((res) => {
       console.log(`response here from main`, res);
       event.reply(CONSTANTS.DOWNLOAD, res);
