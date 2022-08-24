@@ -142,7 +142,13 @@ app
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url, savePath } = arg;
   // console.log(event, arg, url, savePath);
-  downloadMP3(url)
-    .then((res) => console.log(`response here from main`, res))
-    .catch((error) => console.log(error));
+  downloadMP3(url, mainWindow)
+    .then((res) => {
+      console.log(`response here from main`, res);
+      event.reply(CONSTANTS.DOWNLOAD, res);
+    })
+    .catch((error) => {
+      console.log(error);
+      event.reply(CONSTANTS.DOWNLOAD, error);
+    });
 });

@@ -1,13 +1,13 @@
 import { DownloadButton, FileInput, InputError, TextInput } from 'components';
+import useDownload from 'hooks/useDownload';
 // import { ipcRenderer } from 'electron';
 import { useState } from 'react';
 import { validateYoutubeLink } from 'utils';
-import { CONSTANTS } from 'utils/constants';
 
-const { ipcRenderer } = window.electron;
 const Downloader = () => {
   const [url, setUrl] = useState('');
   const [urlError, setUrlError] = useState('');
+  const { progress, download } = useDownload();
 
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value.trim();
@@ -21,10 +21,7 @@ const Downloader = () => {
   };
 
   const downloadClickHandler = () => {
-    console.log('Downloading...');
-    ipcRenderer.sendMessage(CONSTANTS.DOWNLOAD, {
-      url,
-    });
+    download(url);
   };
 
   const disableDownloadButton = Boolean(urlError) || !url;
@@ -46,7 +43,15 @@ const Downloader = () => {
         </div>
       </div>
       <hr className="mt-10" />
-
+      {progress > -1 && (
+        <div className="w-full bg-gray-200 rounded-md h-4 dark:bg-gray-700 mt-10">
+          <div
+            className="bg-blue-600 h-4 rounded-md"
+            style={{ width: `50%` }}
+            // style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
       <div className="flex justify-center mt-10">
         <DownloadButton
           text="Download"
