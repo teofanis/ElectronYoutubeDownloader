@@ -8,6 +8,7 @@ import { FileInput } from 'components/FileInput';
 import { Button } from 'components/Button';
 import { DownloadButton } from 'components/DownloadButton';
 import { InputError } from 'components/InputError';
+import { ProgressBar } from 'components/ProgressBar';
 // Automatic import of components
 export {
   Layout,
@@ -19,5 +20,6 @@ export {
   Button,
   DownloadButton,
   InputError,
+  ProgressBar,
   // Automatic export of components
 };
