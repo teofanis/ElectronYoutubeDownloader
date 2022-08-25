@@ -4,6 +4,6 @@ import { DownloadButton } from 'components';
 
 describe('DownloadButton Test', () => {
   it('should render', () => {
-    expect(render(<DownloadButton>Test</DownloadButton>)).toBeTruthy();
+    expect(render(<DownloadButton text="test" />)).toBeTruthy();
   });
 });

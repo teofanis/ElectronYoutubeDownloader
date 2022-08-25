@@ -4,6 +4,6 @@ import { Downloader } from 'components';
 
 describe('Downloader Test', () => {
   it('should render', () => {
-    expect(render(<Downloader>Test</Downloader>)).toBeTruthy();
+    expect(render(<Downloader />)).toBeTruthy();
   });
 });

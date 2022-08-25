@@ -7,14 +7,15 @@ import { CONSTANTS } from '../utils/constants';
 
 export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   let isCancelled = false;
-  ipcMain.on(CONSTANTS.CANCEL_DOWNLOAD, (event, arg) => (isCancelled = true));
+  ipcMain.on(CONSTANTS.CANCEL_DOWNLOAD, () => {
+    isCancelled = true;
+  });
+
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
   return new Promise((resolve, reject) => {
     return (
       ytdl
-        .getInfo(youtubeLink, {
-          quality: 'highestaudio',
-        })
+        .getInfo(youtubeLink)
         // eslint-disable-next-line promise/always-return
         .then((resource) => {
           const { videoDetails } = resource;

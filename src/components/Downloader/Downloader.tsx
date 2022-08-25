@@ -13,7 +13,6 @@ import { validateYoutubeLink } from 'utils';
 
 const Downloader = () => {
   const [url, setUrl] = useState('');
-  const [listPath, setListPath] = useState('');
   const [urlError, setUrlError] = useState('');
   const {
     isDownloading,
@@ -31,14 +30,13 @@ const Downloader = () => {
     }
     setUrlError('');
     setUrl(link);
-    setListPath('');
   };
 
   const downloadClickHandler = () => {
     download(url);
   };
 
-  const fileClickHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const fileClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
     downloadFromFile();
   };

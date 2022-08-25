@@ -4,6 +4,6 @@ import { ProgressBar } from 'components';
 
 describe('ProgressBar Test', () => {
   it('should render', () => {
-    expect(render(<ProgressBar>Test</ProgressBar>)).toBeTruthy();
+    expect(render(<ProgressBar progress={0} />)).toBeTruthy();
   });
 });

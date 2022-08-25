@@ -4,6 +4,6 @@ import { CancelButton } from 'components';
 
 describe('CancelButton Test', () => {
   it('should render', () => {
-    expect(render(<CancelButton>Test</CancelButton>)).toBeTruthy();
+    expect(render(<CancelButton text="test" />)).toBeTruthy();
   });
 });

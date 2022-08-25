@@ -23,7 +23,8 @@ const useDownload = () => {
     setCurrentSongTitle('');
     setVideoMetadata(undefined);
   };
-  const downloadResponseHandler = (event: any, data) => {
+  const downloadResponseHandler = (event: any, data: any) => {
+    console.log(event, data);
     console.log('Download response handler');
     stopAndReset();
   };
@@ -54,8 +55,9 @@ const useDownload = () => {
 
   const download = (url: string) => {
     setIsDownloading(true);
-    // @ts-ignore
     ipcRenderer.sendMessage(CONSTANTS.DOWNLOAD, {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       url,
     });
   };
@@ -67,6 +69,7 @@ const useDownload = () => {
     currentSongTitle,
     cancel,
     downloadFromFile,
+    videoMetadata,
   };
 };
 

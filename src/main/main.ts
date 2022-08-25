@@ -140,8 +140,7 @@ app
   .catch(console.log);
 
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
-  const { url, savePath } = arg;
-  // console.log(event, arg, url, savePath);
+  const { url } = arg;
   downloadMP3(url, mainWindow as BrowserWindow)
     .then((res) => {
       console.log(`response here from main`, res);
@@ -153,14 +152,14 @@ ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
     });
 });
 
-ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event, args) => {
+ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (_event, _args) => {
   const { dialog } = require('electron');
   const selectedFile = dialog.showOpenDialogSync({
     properties: ['openFile'],
     filters: [{ name: 'Text Filees', extensions: ['txt'] }],
   });
   console.log(selectedFile);
-  if (!selectedFile[0]) {
+  if (!selectedFile?.length) {
     return;
   }
   console.log(path.resolve(selectedFile[0]));
