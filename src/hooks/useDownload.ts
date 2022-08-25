@@ -6,16 +6,12 @@ const { ipcRenderer } = window.electron;
 
 const useDownload = () => {
   const [isDownloading, setIsDownloading] = useState(false);
-  const [cancelDownload, setCancelDownload] = useState(() => {});
   const [currentSongTitle, setCurrentSongTitle] = useState('');
   const [progress, setProgress] = useState(0);
   const [videoMetadata, setVideoMetadata] = useState<MoreVideoDetails>();
 
-  const progressHandler = (event: any, data) => {
-    console.log(event, 'WTF');
-
-    setProgress(event);
-  };
+  const progressHandler = (downloadProgressNumber: any) =>
+    setProgress(downloadProgressNumber);
 
   const downloadResponseHandler = (event: any, data) => {
     console.log(event);
@@ -25,12 +21,9 @@ const useDownload = () => {
   };
 
   const currentDownloadHandler = (data: any) => {
-    console.log('Metadata');
-    const { title, videoDetails, cancel } = data;
+    const { title, videoDetails } = data;
     setCurrentSongTitle(title);
     setVideoMetadata(videoDetails);
-    setCancelDownload(cancel);
-    console.log(data);
   };
   useEffect(() => {
     ipcRenderer.on(CONSTANTS.PROGRESS_UPDATE, progressHandler);
@@ -41,6 +34,14 @@ const useDownload = () => {
     );
   }, []);
 
+  const cancel = () => {
+    ipcRenderer.sendMessage(CONSTANTS.CANCEL_DOWNLOAD, []);
+    setIsDownloading(false);
+    setProgress(0);
+    setCurrentSongTitle('');
+    setVideoMetadata(undefined);
+  };
+
   const download = (url: string) => {
     setIsDownloading(true);
     // @ts-ignore
@@ -49,17 +50,12 @@ const useDownload = () => {
     });
   };
 
-  if (progress) {
-    console.log(progress);
-    console.log('hook');
-  }
-
   return {
     isDownloading,
-    cancelDownload,
     download,
     progress,
     currentSongTitle,
+    cancel,
   };
 };
 

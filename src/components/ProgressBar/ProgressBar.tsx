@@ -11,7 +11,7 @@ const ProgressBar = ({ progress, text }: ProgressBarProps) => {
         // style={{ width: `50%` }}
         style={{ width: `${progress}%` }}
       />
-      <span className="absolute left-1 mix-blend-difference text-white">
+      <span className="absolute left-1 mix-blend-difference  text-white">
         {text}
       </span>
       <span className="absolute right-1 mix-blend-difference text-white">

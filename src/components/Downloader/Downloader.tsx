@@ -13,17 +13,10 @@ import { validateYoutubeLink } from 'utils';
 const Downloader = () => {
   const [url, setUrl] = useState('');
   const [urlError, setUrlError] = useState('');
-  const {
-    isDownloading,
-    progress,
-    download,
-    currentSongTitle,
-    cancelDownload,
-  } = useDownload();
-
+  const { isDownloading, progress, download, cancel, currentSongTitle } =
+    useDownload();
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value.trim();
-
     if (link !== '' && !validateYoutubeLink(link)) {
       setUrlError('Invalid Youtube URL entered');
       return;
@@ -33,7 +26,11 @@ const Downloader = () => {
   };
 
   const downloadClickHandler = () => {
-    download(url);
+    if (!isDownloading) {
+      download(url);
+    } else {
+      cancel();
+    }
   };
 
   const disableDownloadButton = Boolean(urlError) || !url;
@@ -55,13 +52,13 @@ const Downloader = () => {
         </div>
       </div>
       <hr className="mt-10" />
-      {progress > 0 && (
+      {isDownloading && (
         <ProgressBar progress={progress} text={currentSongTitle} />
       )}
       <div className="flex justify-center mt-10">
         <DownloadButton
           text={`${!isDownloading ? 'Download' : 'Cancel'}`}
-          onClick={!isDownloading ? downloadClickHandler : cancelDownload}
+          onClick={downloadClickHandler}
           disabled={disableDownloadButton}
         />
       </div>
