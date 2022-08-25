@@ -9,6 +9,7 @@ import { Button } from 'components/Button';
 import { DownloadButton } from 'components/DownloadButton';
 import { InputError } from 'components/InputError';
 import { ProgressBar } from 'components/ProgressBar';
+import { CancelButton } from 'components/CancelButton';
 // Automatic import of components
 export {
   Layout,
@@ -21,5 +22,6 @@ export {
   DownloadButton,
   InputError,
   ProgressBar,
+  CancelButton,
   // Automatic export of components
 };

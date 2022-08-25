@@ -1,4 +1,5 @@
 import {
+  CancelButton,
   DownloadButton,
   FileInput,
   InputError,
@@ -26,11 +27,7 @@ const Downloader = () => {
   };
 
   const downloadClickHandler = () => {
-    if (!isDownloading) {
-      download(url);
-    } else {
-      cancel();
-    }
+    download(url);
   };
 
   const disableDownloadButton = Boolean(urlError) || !url;
@@ -52,15 +49,26 @@ const Downloader = () => {
         </div>
       </div>
       <hr className="mt-10" />
-      {isDownloading && (
-        <ProgressBar progress={progress} text={currentSongTitle} />
-      )}
+
+      <div className="block h-6 mt-10">
+        {isDownloading && (
+          <ProgressBar progress={progress} text={currentSongTitle} />
+        )}
+      </div>
       <div className="flex justify-center mt-10">
-        <DownloadButton
-          text={`${!isDownloading ? 'Download' : 'Cancel'}`}
-          onClick={downloadClickHandler}
-          disabled={disableDownloadButton}
-        />
+        {isDownloading ? (
+          <CancelButton
+            onClick={cancel}
+            text="Cancel"
+            disabled={!isDownloading}
+          />
+        ) : (
+          <DownloadButton
+            text="Download"
+            onClick={downloadClickHandler}
+            disabled={disableDownloadButton}
+          />
+        )}
       </div>
     </div>
   );

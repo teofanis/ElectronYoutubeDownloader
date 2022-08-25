@@ -17,7 +17,12 @@ interface DownloadButtonProps
 
 const DownloadButton = ({ onClick, disabled, text }: DownloadButtonProps) => {
   return (
-    <Button onClick={onClick} disabled={disabled}>
+    <Button
+      onClick={onClick}
+      disabled={disabled}
+      className="bg-gray-300
+      hover:bg-gray-100"
+    >
       <DownloadIcon />
       <span>{text}</span>
     </Button>
