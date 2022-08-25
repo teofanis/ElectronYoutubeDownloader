@@ -2,7 +2,14 @@ interface FileInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
-const FileInput = ({ id, className, label, name }: FileInputProps) => {
+const FileInput = ({
+  id,
+  className,
+  label,
+  name,
+  onChange,
+  onClick,
+}: FileInputProps) => {
   return (
     <label htmlFor="fileUpload" className="block bg-white rounded-lg flex-1">
       <span className="sr-only">{label}</span>
@@ -10,6 +17,7 @@ const FileInput = ({ id, className, label, name }: FileInputProps) => {
         id={id}
         type="file"
         name={name}
+        onClick={onClick}
         className={`block
                   w-full
                   text-base text-gray-800
@@ -34,6 +42,7 @@ const FileInput = ({ id, className, label, name }: FileInputProps) => {
                   transition duration-500 ease-in-out transform border-transparent rounded-lg
                   ${className}
                `}
+        onChange={onChange}
       />
     </label>
   );

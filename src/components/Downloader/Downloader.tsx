@@ -13,9 +13,16 @@ import { validateYoutubeLink } from 'utils';
 
 const Downloader = () => {
   const [url, setUrl] = useState('');
+  const [listPath, setListPath] = useState('');
   const [urlError, setUrlError] = useState('');
-  const { isDownloading, progress, download, cancel, currentSongTitle } =
-    useDownload();
+  const {
+    isDownloading,
+    progress,
+    download,
+    cancel,
+    currentSongTitle,
+    downloadFromFile,
+  } = useDownload();
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value.trim();
     if (link !== '' && !validateYoutubeLink(link)) {
@@ -24,10 +31,16 @@ const Downloader = () => {
     }
     setUrlError('');
     setUrl(link);
+    setListPath('');
   };
 
   const downloadClickHandler = () => {
     download(url);
+  };
+
+  const fileClickHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    downloadFromFile();
   };
 
   const disableDownloadButton = Boolean(urlError) || !url;
@@ -45,7 +58,12 @@ const Downloader = () => {
         </div>
         <span className="flex font-semibold text-white text-xl">OR</span>
         <div className="flex flex-1">
-          <FileInput name="sourceList" label="Choose a File" id="sourceList" />
+          <FileInput
+            name="sourceList"
+            label="Choose a File"
+            id="sourceList"
+            onClick={fileClickHandler}
+          />
         </div>
       </div>
       <hr className="mt-10" />

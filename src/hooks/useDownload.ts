@@ -10,8 +10,12 @@ const useDownload = () => {
   const [progress, setProgress] = useState(0);
   const [videoMetadata, setVideoMetadata] = useState<MoreVideoDetails>();
 
-  const progressHandler = (downloadProgressNumber: any) =>
+  const progressHandler = (downloadProgressNumber: any) => {
+    if (!isDownloading) {
+      setIsDownloading(true);
+    }
     setProgress(downloadProgressNumber);
+  };
 
   const stopAndReset = () => {
     setIsDownloading(false);
@@ -29,6 +33,7 @@ const useDownload = () => {
     setCurrentSongTitle(title);
     setVideoMetadata(videoDetails);
   };
+
   useEffect(() => {
     ipcRenderer.on(CONSTANTS.PROGRESS_UPDATE, progressHandler);
     ipcRenderer.on(CONSTANTS.DOWNLOAD, downloadResponseHandler);
@@ -41,6 +46,10 @@ const useDownload = () => {
   const cancel = () => {
     ipcRenderer.sendMessage(CONSTANTS.CANCEL_DOWNLOAD, []);
     stopAndReset();
+  };
+
+  const downloadFromFile = () => {
+    ipcRenderer.sendMessage(CONSTANTS.DOWNLOAD_FILE, []);
   };
 
   const download = (url: string) => {
@@ -57,6 +66,7 @@ const useDownload = () => {
     progress,
     currentSongTitle,
     cancel,
+    downloadFromFile,
   };
 };
 

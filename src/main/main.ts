@@ -152,3 +152,16 @@ ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
       event.reply(CONSTANTS.DOWNLOAD, error);
     });
 });
+
+ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event, args) => {
+  const { dialog } = require('electron');
+  const selectedFile = dialog.showOpenDialogSync({
+    properties: ['openFile'],
+    filters: [{ name: 'Text Filees', extensions: ['txt'] }],
+  });
+  console.log(selectedFile);
+  if (!selectedFile[0]) {
+    return;
+  }
+  console.log(path.resolve(selectedFile[0]));
+});
