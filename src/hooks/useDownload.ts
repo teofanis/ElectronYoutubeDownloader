@@ -13,11 +13,15 @@ const useDownload = () => {
   const progressHandler = (downloadProgressNumber: any) =>
     setProgress(downloadProgressNumber);
 
-  const downloadResponseHandler = (event: any, data) => {
-    console.log(event);
-    console.log(data);
-    console.log('Download response handler');
+  const stopAndReset = () => {
     setIsDownloading(false);
+    setProgress(0);
+    setCurrentSongTitle('');
+    setVideoMetadata(undefined);
+  };
+  const downloadResponseHandler = (event: any, data) => {
+    console.log('Download response handler');
+    stopAndReset();
   };
 
   const currentDownloadHandler = (data: any) => {
@@ -36,10 +40,7 @@ const useDownload = () => {
 
   const cancel = () => {
     ipcRenderer.sendMessage(CONSTANTS.CANCEL_DOWNLOAD, []);
-    setIsDownloading(false);
-    setProgress(0);
-    setCurrentSongTitle('');
-    setVideoMetadata(undefined);
+    stopAndReset();
   };
 
   const download = (url: string) => {

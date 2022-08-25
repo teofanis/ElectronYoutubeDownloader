@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 /* eslint-disable import/prefer-default-export */
 import fs from 'fs';
 import path from 'path';
@@ -8,6 +8,7 @@ import { CONSTANTS } from '../utils/constants';
 export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   let isCancelled = false;
   ipcMain.on(CONSTANTS.CANCEL_DOWNLOAD, (event, arg) => (isCancelled = true));
+  const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
   return new Promise((resolve, reject) => {
     return (
       ytdl
@@ -21,8 +22,15 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
           const audioStream = ytdl.downloadFromInfo(resource, {
             quality: 'highestaudio',
           });
-
-          const cancelDownload = () => audioStream.destroy();
+          const downloadPath = path.join(
+            DEFAULT_DOWNLOAD_FOLDER,
+            `${title}.mp3`
+          );
+          const fileStream = fs.createWriteStream(downloadPath);
+          const cancelDownload = () => {
+            audioStream.destroy();
+            resolve(`${title} download was cancelled`);
+          };
           audioStream.on('response', (response) => {
             const fileSize = response.headers['content-length'];
             win.webContents.send(CONSTANTS.CURRENT_DOWNLOAD_META_DATA, {
@@ -43,22 +51,16 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
           });
 
           audioStream.on('error', () => {
+            fs.unlink(downloadPath, () => {});
             reject(new Error(`Failed to download ${title}`));
           });
 
           audioStream.on('end', () => {
+            fileStream.close();
             resolve(`${title} was downloaded successfully!`);
           });
 
-          audioStream.on('close', () => {
-            resolve(`${title} download was cancelled`);
-          });
-
-          audioStream.pipe(
-            fs.createWriteStream(
-              path.join(`${__dirname}../../`, `${title}.mp3`)
-            )
-          );
+          audioStream.pipe(fileStream);
         })
         .catch((error) => {
           console.log('WTF');
