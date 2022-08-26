@@ -46,7 +46,8 @@
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
-    "test": "jest"
+    "test": "jest",
+    "plop": "plop"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -78,6 +79,10 @@
     ]
   },
   "jest": {
+    "roots": [
+      "<rootDir>",
+      "./"
+    ],
     "moduleDirectories": [
       "node_modules",
       "release/app/node_modules"
@@ -96,6 +101,9 @@
     "setupFiles": [
       "./.erb/scripts/check-build-exists.ts"
     ],
+    "setupFilesAfterEnv": [
+      "./.erb/scripts/jest-after-env.setup.ts"
+    ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
       "url": "http://localhost/"
@@ -105,7 +113,10 @@
     ],
     "transform": {
       "\\.(ts|tsx|js|jsx)$": "ts-jest"
-    }
+    },
+    "modulePaths": [
+      "<rootDir>/src/"
+    ]
   },
   "dependencies": {
     "electron-debug": "^3.2.0",
@@ -113,15 +124,21 @@
     "electron-updater": "^5.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "ytdl-core": "4.10.0"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+    "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/forms": "^0.5.2",
+    "@tailwindcss/line-clamp": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.4",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@types/jest": "^28.1.7",
     "@types/node": "18.7.6",
+    "@types/prop-types": "^15.7.5",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-test-renderer": "^18.0.0",
@@ -129,6 +146,7 @@
     "@types/webpack-bundle-analyzer": "^4.4.2",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
+    "autoprefixer": "^10.4.8",
     "browserslist-config-erb": "^0.0.3",
     "chalk": "^4.1.2",
     "concurrently": "^7.3.0",
@@ -155,6 +173,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-tailwindcss": "^3.6.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^8.0.1",
@@ -163,6 +182,9 @@
     "jest-environment-jsdom": "^28.1.3",
     "lint-staged": "^13.0.3",
     "mini-css-extract-plugin": "^2.6.1",
+    "plop": "^3.1.1",
+    "postcss": "^8.4.16",
+    "postcss-loader": "^7.0.1",
     "prettier": "^2.7.1",
     "react-refresh": "^0.14.0",
     "react-test-renderer": "^18.2.0",
@@ -170,6 +192,7 @@
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
+    "tailwindcss": "^3.1.8",
     "terser-webpack-plugin": "^5.3.5",
     "ts-jest": "^28.0.8",
     "ts-loader": "^9.3.1",
