@@ -54,21 +54,28 @@ const Downloader = () => {
           />
           <InputError error={urlError} />
         </div>
-        <span className="flex font-semibold text-white text-xl">OR</span>
-        <div className="flex flex-1">
-          <FileInput
-            name="sourceList"
-            label="Choose a File"
-            id="sourceList"
-            onClick={fileClickHandler}
-          />
-        </div>
+        {false && (
+          <>
+            <span className="flex font-semibold text-white text-xl">OR</span>
+            <div className="flex flex-1">
+              <FileInput
+                name="sourceList"
+                label="Choose a File"
+                id="sourceList"
+                onClick={fileClickHandler}
+              />
+            </div>
+          </>
+        )}
       </div>
       <hr className="mt-10" />
 
       <div className="block h-6 mt-10">
         {isDownloading && (
-          <ProgressBar progress={progress} text={currentSongTitle} />
+          <ProgressBar
+            progress={progress}
+            text={currentSongTitle || 'Loading....'}
+          />
         )}
       </div>
       <div className="flex justify-center mt-10">
