@@ -42,6 +42,7 @@ const useDownload = () => {
       CONSTANTS.CURRENT_DOWNLOAD_META_DATA,
       currentDownloadHandler
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const cancel = () => {
