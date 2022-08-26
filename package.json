@@ -79,6 +79,10 @@
     ]
   },
   "jest": {
+    "roots": [
+      "<rootDir>",
+      "./"
+    ],
     "moduleDirectories": [
       "node_modules",
       "release/app/node_modules"
@@ -96,6 +100,9 @@
     },
     "setupFiles": [
       "./.erb/scripts/check-build-exists.ts"
+    ],
+    "setupFilesAfterEnv": [
+      "./.erb/scripts/jest-after-env.setup.ts"
     ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
