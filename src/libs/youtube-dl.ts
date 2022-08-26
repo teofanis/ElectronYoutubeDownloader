@@ -28,8 +28,11 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
             `${title}.mp3`
           );
           const fileStream = fs.createWriteStream(downloadPath);
+
           const cancelDownload = () => {
             audioStream.destroy();
+            fileStream.close();
+            fs.unlink(downloadPath, () => {});
             resolve(`${title} download was cancelled`);
           };
           audioStream.on('response', (response) => {
