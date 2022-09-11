@@ -11,7 +11,7 @@ In use by family members and close friends.
 
 ## Pending Items / Improvements
 
-- Download multiple sogns from TXT file
+- Download multiple songs from TXT file
 - Expose More Options from ytbl (video, quality, etc..)
 - Improve Design / UX
 - Add a settings page
