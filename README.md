@@ -8,6 +8,8 @@ In use by family members and close friends.
 ## Demo
 
 - v0.0.1
+![YoutubeDownloaderDemo](https://user-images.githubusercontent.com/47872542/189547923-bc6b680f-f20a-4f5b-bfa0-2d96c6e24084.gif)
+
 
 ## Pending Items / Improvements
 
@@ -20,6 +22,7 @@ In use by family members and close friends.
 - Search / Download ?
 - One-click download chrome extension ?
 - Refactor to follow best practises + write tests
+- Multilingual 
 
 ## Acknowledgements
 
