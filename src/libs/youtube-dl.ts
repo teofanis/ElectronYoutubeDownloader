@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 /* eslint-disable import/prefer-default-export */
 import fs from 'fs';
 import path from 'path';
-import { sanitizeFileName } from 'utils/sanitizeFileName';
+import { sanitizeFileName } from 'utils';
 import ytdl from 'ytdl-core';
 import { CONSTANTS } from '../utils/constants';
 
