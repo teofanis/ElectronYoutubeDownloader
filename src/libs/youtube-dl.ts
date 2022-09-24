@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 /* eslint-disable import/prefer-default-export */
 import fs from 'fs';
 import path from 'path';
+import { sanitizeFileName } from 'utils/sanitizeFileName';
 import ytdl from 'ytdl-core';
 import { CONSTANTS } from '../utils/constants';
 
@@ -10,6 +11,7 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   ipcMain.on(CONSTANTS.CANCEL_DOWNLOAD, () => {
     isCancelled = true;
   });
+
 
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
   return new Promise((resolve, reject) => {
@@ -25,7 +27,7 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
           });
           const downloadPath = path.join(
             DEFAULT_DOWNLOAD_FOLDER,
-            `${title}.mp3`
+            sanitizeFileName(`${title}.mp3`)
           );
           const fileStream = fs.createWriteStream(downloadPath);
 
