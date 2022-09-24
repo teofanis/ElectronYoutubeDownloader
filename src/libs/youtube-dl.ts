@@ -12,7 +12,6 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
     isCancelled = true;
   });
 
-
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
   return new Promise((resolve, reject) => {
     return (

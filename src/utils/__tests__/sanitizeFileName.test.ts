@@ -1,5 +1,4 @@
-import { sanitizeFileName } from "utils/sanitizeFileName";
-
+import { sanitizeFileName } from '../index';
 
 describe('sanitizeFileName', () => {
   it('should remove all invalid characters', () => {
