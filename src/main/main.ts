@@ -13,6 +13,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import { downloadMP3 } from '../libs/youtube-dl';
+import { validateYoutubeLink } from '../utils';
 import { CONSTANTS } from '../utils/constants';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -152,15 +153,37 @@ ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
     });
 });
 
-ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (_event, _args) => {
+ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event, _args) => {
   const { dialog } = require('electron');
   const selectedFile = dialog.showOpenDialogSync({
     properties: ['openFile'],
-    filters: [{ name: 'Text Filees', extensions: ['txt'] }],
+    filters: [{ name: 'Text Files', extensions: ['txt'] }],
   });
-  console.log(selectedFile);
   if (!selectedFile?.length) {
     return;
   }
-  console.log(path.resolve(selectedFile[0]));
+  try {
+    const fs = require('fs');
+    const data = fs.readFileSync(selectedFile[0], 'utf8');
+    const urls = data.trim().split('\n');
+    const validatedUrls = urls
+      .map((url: string) => url.trim())
+      .filter((url: string) => validateYoutubeLink(url));
+    const downloaded = validatedUrls.map((url: string) =>
+      downloadMP3(url, mainWindow as BrowserWindow)
+    );
+
+    Promise.all(downloaded)
+      .then((res) => {
+        console.log(`response here from main`, res);
+        event.reply(CONSTANTS.DOWNLOAD, res);
+      })
+      .catch((error) => {
+        console.log(error);
+        event.reply(CONSTANTS.DOWNLOAD, error);
+      });
+    // event.reply(CONSTANTS.DOWNLOAD_FILE, validatedUrls);
+  } catch (err) {
+    console.error(err);
+  }
 });
