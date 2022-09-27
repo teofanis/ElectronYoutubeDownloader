@@ -42,6 +42,8 @@ const useDownload = () => {
       CONSTANTS.CURRENT_DOWNLOAD_META_DATA,
       currentDownloadHandler
     );
+
+    return () => ipcRenderer.removeAllListeners();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
