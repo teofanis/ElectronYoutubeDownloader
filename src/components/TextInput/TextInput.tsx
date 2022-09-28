@@ -7,6 +7,7 @@ const TextInput = ({
   id,
   placeholder,
   onChange,
+  onBlur,
   className,
   value,
   errored,
@@ -38,6 +39,7 @@ const TextInput = ({
               ${className}
       `}
       onChange={onChange}
+      onBlur={onBlur}
       value={value}
     />
   );

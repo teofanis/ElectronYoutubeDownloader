@@ -1,27 +1,34 @@
 import {
   CancelButton,
+  DownloadableItem,
   DownloadButton,
   FileInput,
   InputError,
-  ProgressBar,
   TextInput,
 } from 'components';
-import useDownload from 'hooks/useDownload';
-// import { ipcRenderer } from 'electron';
-import { useState } from 'react';
+import { DownloadQueue } from 'interfaces';
+import React, { useState } from 'react';
 import { validateYoutubeLink } from 'utils';
 
 const Downloader = () => {
-  const [url, setUrl] = useState('');
+  const [downloadHasStarted, setDownloadHasStarted] = useState(false);
+  const [downloadQueue, setDownloadQueue] = useState<DownloadQueue>([]);
   const [urlError, setUrlError] = useState('');
-  const {
-    isDownloading,
-    progress,
-    download,
-    cancel,
-    currentSongTitle,
-    downloadFromFile,
-  } = useDownload();
+
+  const addToDownloadQueue = (url: string) => {
+    const newDownloadQueue = [...downloadQueue, { url }].filter(
+      (item, index, self) => self.findIndex((t) => t.url === item.url) === index
+    );
+    setDownloadQueue(newDownloadQueue);
+  };
+
+  const urlBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
+    const link = e.target.value.trim();
+    if (validateYoutubeLink(link)) {
+      addToDownloadQueue(link);
+    }
+  };
+
   const urlChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const link = e.target.value.trim();
     if (link !== '' && !validateYoutubeLink(link)) {
@@ -29,19 +36,26 @@ const Downloader = () => {
       return;
     }
     setUrlError('');
-    setUrl(link);
   };
 
+  console.log(downloadQueue);
+
   const downloadClickHandler = () => {
-    download(url);
+    setDownloadHasStarted(true);
+    // download(url);
+  };
+
+  const cancelClickHandler = () => {
+    console.log('cancel');
+    setDownloadHasStarted(false);
   };
 
   const fileClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    downloadFromFile();
+    // downloadFromFile();
   };
 
-  const disableDownloadButton = Boolean(urlError) || !url;
+  const disableDownloadButton = Boolean(urlError) || downloadQueue.length === 0;
   return (
     <div className="max-w-[1500px] mt-10">
       <div className="flex items-baseline space-x-4 justify-around">
@@ -49,6 +63,7 @@ const Downloader = () => {
           <TextInput
             name="url"
             onChange={urlChangeHandler}
+            onBlur={urlBlurHandler}
             placeholder="Enter Youtube URL"
             errored={Boolean(urlError)}
           />
@@ -67,33 +82,29 @@ const Downloader = () => {
         </div>
       </div>
       <hr className="mt-10" />
+      <div>
+        {/* temp */}
+        {!downloadHasStarted && (
+          <>
+            {downloadQueue.map((item) => (
+              <DownloadableItem key={item.url} item={item} />
+            ))}
+          </>
+        )}
+      </div>
 
-      <div className="block h-6 mt-10">
-        {isDownloading && (
-          <ProgressBar
-            progress={progress}
-            text={currentSongTitle || 'Loading....'}
-          />
-        )}
-      </div>
-      <div className="block h-6 mt-10">
-        {isDownloading && (
-          <ProgressBar
-            progress={progress}
-            text={currentSongTitle || 'Loading....'}
-          />
-        )}
-      </div>
       <div className="flex justify-center mt-10">
-        {isDownloading ? (
+        {downloadHasStarted ? (
           <CancelButton
-            onClick={cancel}
+            onClick={cancelClickHandler}
             text="Cancel"
-            disabled={!isDownloading}
+            disabled={!downloadHasStarted}
           />
         ) : (
           <DownloadButton
-            text="Download"
+            text={`Download${
+              downloadQueue.length > 0 ? ` (${downloadQueue.length})` : ''
+            }`}
             onClick={downloadClickHandler}
             disabled={disableDownloadButton}
           />

@@ -10,6 +10,9 @@ import { DownloadButton } from 'components/DownloadButton';
 import { InputError } from 'components/InputError';
 import { ProgressBar } from 'components/ProgressBar';
 import { CancelButton } from 'components/CancelButton';
+import { DownloadableItem } from 'components/DownloadableItem';
+import { DownloadableItemControls } from 'components/DownloadableItemControls';
+import { DownloadItemControl } from 'components/DownloadItemControl';
 // Automatic import of components
 export {
   Layout,
@@ -23,5 +26,8 @@ export {
   InputError,
   ProgressBar,
   CancelButton,
+  DownloadableItem,
+  DownloadableItemControls,
+  DownloadItemControl,
   // Automatic export of components
 };
