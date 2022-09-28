@@ -3,13 +3,36 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import ytdl from 'ytdl-core';
-import { sanitizeFileName } from '../utils';
+import { getLinkChannelName, sanitizeFileName } from '../utils';
 import { CONSTANTS } from '../utils/constants';
 
 export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   let isCancelled = false;
-  ipcMain.on(CONSTANTS.CANCEL_DOWNLOAD, () => {
+  let isPaused = false;
+
+  const pauseDownloadEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.PAUSE_DOWNLOAD
+  );
+
+  const progressUpdateEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.PROGRESS_UPDATE
+  );
+  const currentMetadataEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.CURRENT_DOWNLOAD_META_DATA
+  );
+  const cancelEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.CANCEL_DOWNLOAD
+  );
+  ipcMain.on(cancelEvent, () => {
     isCancelled = true;
+  });
+
+  ipcMain.on(pauseDownloadEvent, () => {
+    isPaused = !isPaused;
   });
 
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
@@ -36,22 +59,33 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
             fs.unlink(downloadPath, () => {});
             resolve(`${title} download was cancelled`);
           };
+
           audioStream.on('response', (response) => {
             const fileSize = response.headers['content-length'];
-            win.webContents.send(CONSTANTS.CURRENT_DOWNLOAD_META_DATA, {
+            win.webContents.send(currentMetadataEvent, {
               fileSize,
               title,
               videoDetails,
             });
             let downloaded = 0;
             response.on('data', (data: string | any[]) => {
+              if (isPaused && !audioStream.isPaused()) {
+                audioStream.pause();
+                return;
+              }
+              if (!isPaused && audioStream.isPaused()) {
+                audioStream.resume();
+                return;
+              }
               if (isCancelled) {
                 cancelDownload();
               }
               downloaded += data.length;
               const percentage = ((downloaded / fileSize) * 100).toFixed(2);
-              // console.log(`Percentage ${percentage}`);
-              win.webContents.send(CONSTANTS.PROGRESS_UPDATE, percentage);
+
+              console.log(`Percentage ${percentage}`);
+              console.log(`EVENT ${progressUpdateEvent}`);
+              win.webContents.send(progressUpdateEvent, percentage);
             });
           });
 

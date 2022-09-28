@@ -6,23 +6,40 @@ import {
   ProgressBar,
 } from 'components';
 import useDownload from 'hooks/useDownload';
+import useEffectOnce from 'hooks/useEffectOnce';
 import useHover from 'hooks/useHover';
 import { DownloadQueueItem } from 'interfaces';
 import { useRef, useState } from 'react';
 
 interface DownloadableItemProps {
   item: DownloadQueueItem;
+  onCancel: (url: string) => void;
 }
 
-const DownloadableItem = ({ item }: DownloadableItemProps) => {
+const DownloadableItem = ({ item, onCancel }: DownloadableItemProps) => {
   const [url, setUrl] = useState(item.url);
-  const { isDownloading, progress, download, cancel, currentSongTitle } =
-    useDownload();
+  const {
+    isDownloading,
+    isPaused,
+    progress,
+    download,
+    cancel,
+    currentSongTitle,
+    pause,
+  } = useDownload(url);
 
-  // useEffectOnce(() => download(url));
+  useEffectOnce(() => download(url));
   const downloadableRef = useRef(null);
   const isHover = useHover(downloadableRef);
-  console.log(isHover);
+
+  const cancelClickHandler = () => {
+    cancel();
+    onCancel(url);
+  };
+  const pauseClickHandler = () => {
+    pause();
+    console.log(isPaused);
+  };
   return (
     <div className="w-full flex flex-wrap space-y-2 relative">
       <ProgressBar
@@ -37,7 +54,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
           <DownloadItemControl>
             <Button
               className="bg-orange-600 hover:bg-orange-400 text-white h-6"
-              onClick={() => alert('Hi')}
+              onClick={pauseClickHandler}
               disabled={!isHover}
             >
               Pause
@@ -47,7 +64,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
             <Button
               className="bg-primary-red text-white
       hover:bg-red-400 h-6"
-              onClick={() => alert('Hi')}
+              onClick={cancelClickHandler}
               disabled={!isHover}
             >
               Cancel

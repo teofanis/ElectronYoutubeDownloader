@@ -4,7 +4,7 @@ declare global {
   interface Window {
     electron: {
       ipcRenderer: {
-        removeAllListeners(): void;
+        removeAllListeners(channel?: Channels | string | null): void;
         sendMessage(channel: Channels, args: unknown[]): void;
         on(
           channel: string,

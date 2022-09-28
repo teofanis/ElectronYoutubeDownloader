@@ -7,18 +7,24 @@ import {
   TextInput,
 } from 'components';
 import { DownloadQueue } from 'interfaces';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { validateYoutubeLink } from 'utils';
 
 const Downloader = () => {
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
   const [downloadQueue, setDownloadQueue] = useState<DownloadQueue>([]);
   const [urlError, setUrlError] = useState('');
+  const textInputRef = useRef<HTMLInputElement>(null);
 
   const addToDownloadQueue = (url: string) => {
     const newDownloadQueue = [...downloadQueue, { url }].filter(
       (item, index, self) => self.findIndex((t) => t.url === item.url) === index
     );
+    setDownloadQueue(newDownloadQueue);
+  };
+
+  const removeItemFromDownloadQueue = (url: string) => {
+    const newDownloadQueue = downloadQueue.filter((item) => item.url !== url);
     setDownloadQueue(newDownloadQueue);
   };
 
@@ -54,6 +60,17 @@ const Downloader = () => {
     e.preventDefault();
     // downloadFromFile();
   };
+  useEffect(() => {
+    const textInputHasValue = textInputRef.current?.value.trim() !== '';
+    if (textInputHasValue) {
+      const textLinkIsPresent = downloadQueue.some(
+        (item) => item.url === textInputRef.current?.value?.trim()
+      );
+      if (!textLinkIsPresent && textInputRef.current) {
+        textInputRef.current.value = '';
+      }
+    }
+  }, [downloadQueue]);
 
   const disableDownloadButton = Boolean(urlError) || downloadQueue.length === 0;
   return (
@@ -61,6 +78,7 @@ const Downloader = () => {
       <div className="flex items-baseline space-x-4 justify-around">
         <div className="flex flex-wrap flex-1">
           <TextInput
+            ref={textInputRef}
             name="url"
             onChange={urlChangeHandler}
             onBlur={urlBlurHandler}
@@ -83,11 +101,14 @@ const Downloader = () => {
       </div>
       <hr className="mt-10" />
       <div>
-        {/* temp */}
-        {!downloadHasStarted && (
+        {downloadHasStarted && (
           <>
             {downloadQueue.map((item) => (
-              <DownloadableItem key={item.url} item={item} />
+              <DownloadableItem
+                key={item.url}
+                item={item}
+                onCancel={removeItemFromDownloadQueue}
+              />
             ))}
           </>
         )}

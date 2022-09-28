@@ -13,7 +13,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import { downloadMP3 } from '../libs/youtube-dl';
-import { validateYoutubeLink } from '../utils';
+import { getLinkChannelName, validateYoutubeLink } from '../utils';
 import { CONSTANTS } from '../utils/constants';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -142,14 +142,15 @@ app
 
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url } = arg;
+  const replyEvent = getLinkChannelName(url, CONSTANTS.DOWNLOAD);
   downloadMP3(url, mainWindow as BrowserWindow)
     .then((res) => {
       console.log(`response here from main`, res);
-      event.reply(CONSTANTS.DOWNLOAD, res);
+      event.reply(replyEvent, res);
     })
     .catch((error) => {
       console.log(error);
-      event.reply(CONSTANTS.DOWNLOAD, error);
+      event.reply(replyEvent, error);
     });
 });
 
