@@ -6,26 +6,30 @@ import {
   InputError,
   TextInput,
 } from 'components';
-import { DownloadQueue } from 'interfaces';
 import React, { useEffect, useRef, useState } from 'react';
 import { validateYoutubeLink } from 'utils';
+import store, { MainStore } from '../../store/store';
 
 const Downloader = () => {
+  const downloadQueue = store.useStore((state) => state.downloadQueue);
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
-  const [downloadQueue, setDownloadQueue] = useState<DownloadQueue>([]);
   const [urlError, setUrlError] = useState('');
   const textInputRef = useRef<HTMLInputElement>(null);
 
+  function setStoreValue<T>(key: keyof MainStore, value: T) {
+    const currentState = store.getState();
+    store.setState({ ...currentState, [key]: value });
+  }
   const addToDownloadQueue = (url: string) => {
     const newDownloadQueue = [...downloadQueue, { url }].filter(
       (item, index, self) => self.findIndex((t) => t.url === item.url) === index
     );
-    setDownloadQueue(newDownloadQueue);
+    setStoreValue('downloadQueue', newDownloadQueue);
   };
 
   const removeItemFromDownloadQueue = (url: string) => {
     const newDownloadQueue = downloadQueue.filter((item) => item.url !== url);
-    setDownloadQueue(newDownloadQueue);
+    setStoreValue('downloadQueue', newDownloadQueue);
   };
 
   const urlBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -69,6 +73,12 @@ const Downloader = () => {
       if (!textLinkIsPresent && textInputRef.current) {
         textInputRef.current.value = '';
       }
+    }
+  }, [downloadQueue]);
+
+  useEffect(() => {
+    if (downloadQueue.length === 0) {
+      setDownloadHasStarted(false);
     }
   }, [downloadQueue]);
 
