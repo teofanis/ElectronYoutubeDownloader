@@ -9,7 +9,6 @@ const { ipcRenderer } = window.electron;
 const useDownload = (youtubeLink: string) => {
   const [link, setLink] = useState(youtubeLink);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [currentSongTitle, setCurrentSongTitle] = useState('');
   const [progress, setProgress] = useState(0);
   const [videoMetadata, setVideoMetadata] = useState<MoreVideoDetails>();
@@ -21,7 +20,6 @@ const useDownload = (youtubeLink: string) => {
   };
 
   const stopAndReset = () => {
-    setIsPaused(false);
     setIsDownloading(false);
     setProgress(0);
     setCurrentSongTitle('');
@@ -33,9 +31,6 @@ const useDownload = (youtubeLink: string) => {
     stopAndReset();
   };
 
-  const pauseHandler = () => {
-    setIsPaused((prev) => !prev);
-  };
   const currentDownloadHandler = (data: any) => {
     const { title, videoDetails } = data;
     setCurrentSongTitle(title);
@@ -56,10 +51,6 @@ const useDownload = (youtubeLink: string) => {
         channel: getLinkChannelName(link, CONSTANTS.CURRENT_DOWNLOAD_META_DATA),
         handler: currentDownloadHandler,
       },
-      {
-        channel: getLinkChannelName(link, CONSTANTS.PAUSE_DOWNLOAD),
-        handler: pauseHandler,
-      },
     ];
 
     LISTENERS.forEach(({ channel, handler }) => {
@@ -73,13 +64,6 @@ const useDownload = (youtubeLink: string) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pause = () => {
-    const event = getLinkChannelName(
-      link,
-      CONSTANTS.PAUSE_DOWNLOAD
-    ) as Channels;
-    ipcRenderer.sendMessage(event, []);
-  };
   const cancel = () => {
     const event = getLinkChannelName(
       link,
@@ -104,12 +88,10 @@ const useDownload = (youtubeLink: string) => {
   };
 
   return {
-    isPaused,
     isDownloading,
     download,
     progress,
     currentSongTitle,
-    pause,
     cancel,
     downloadFromFile,
     videoMetadata,

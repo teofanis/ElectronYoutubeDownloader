@@ -8,13 +8,6 @@ import { CONSTANTS } from '../utils/constants';
 
 export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   let isCancelled = false;
-  let isPaused = false;
-
-  const pauseDownloadEvent = getLinkChannelName(
-    youtubeLink,
-    CONSTANTS.PAUSE_DOWNLOAD
-  );
-
   const progressUpdateEvent = getLinkChannelName(
     youtubeLink,
     CONSTANTS.PROGRESS_UPDATE
@@ -29,10 +22,6 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   );
   ipcMain.on(cancelEvent, () => {
     isCancelled = true;
-  });
-
-  ipcMain.on(pauseDownloadEvent, () => {
-    isPaused = !isPaused;
   });
 
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
@@ -69,14 +58,6 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
             });
             let downloaded = 0;
             response.on('data', (data: string | any[]) => {
-              if (isPaused && !audioStream.isPaused()) {
-                audioStream.pause();
-                return;
-              }
-              if (!isPaused && audioStream.isPaused()) {
-                audioStream.resume();
-                return;
-              }
               if (isCancelled) {
                 cancelDownload();
               }
