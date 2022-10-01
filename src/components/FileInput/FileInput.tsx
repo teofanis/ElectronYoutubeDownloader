@@ -1,5 +1,6 @@
 interface FileInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
+  errored?: boolean;
 }
 
 const FileInput = ({
@@ -9,6 +10,7 @@ const FileInput = ({
   name,
   onChange,
   onClick,
+  errored,
 }: FileInputProps) => {
   return (
     <label htmlFor="fileUpload" className="block bg-white rounded-lg flex-1">
@@ -40,6 +42,11 @@ const FileInput = ({
                   ring-offset-current ring-offset-2
                 ring-gray-700
                   transition duration-500 ease-in-out transform border-transparent rounded-lg
+                   ${
+                     errored
+                       ? 'border-red-500 right-2 outline-red-600 shadow-outline-red-500 '
+                       : ''
+                   }
                   ${className}
                `}
         onChange={onChange}
@@ -48,4 +55,7 @@ const FileInput = ({
   );
 };
 
+FileInput.defaultProps = {
+  errored: false,
+};
 export default FileInput;

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-lone-blocks */
 import {
   Button,
@@ -6,6 +7,7 @@ import {
   ProgressBar,
 } from 'components';
 import useDownload from 'hooks/useDownload';
+import useDownloaderStore from 'hooks/useDownloaderStore';
 import useEffectOnce from 'hooks/useEffectOnce';
 import useHover from 'hooks/useHover';
 import { DownloadQueueItem } from 'interfaces';
@@ -13,28 +15,41 @@ import { useRef, useState } from 'react';
 
 interface DownloadableItemProps {
   item: DownloadQueueItem;
-  onCancel: (url: string) => void;
 }
 
-const DownloadableItem = ({ item, onCancel }: DownloadableItemProps) => {
-  const [url, setUrl] = useState(item.url);
-  const { isDownloading, progress, download, cancel, currentSongTitle } =
+const DownloadableItem = ({ item }: DownloadableItemProps) => {
+  const [url] = useState(item.url);
+  const { progress, download, cancel, currentSongTitle, downloadableItem } =
     useDownload(url);
-
+  const removeFromDownloadQueue = useDownloaderStore(
+    (state) => state.removeFromDownloadQueue
+  );
   useEffectOnce(() => download(url));
   const downloadableRef = useRef(null);
   const isHover = useHover(downloadableRef);
 
-  const cancelClickHandler = () => {
-    cancel();
-    onCancel(url);
-  };
+  const cancelClickHandler = () => cancel();
+  const clearClickHandler = () => removeFromDownloadQueue(url);
 
+  const cancelled = downloadableItem?.status === 'cancelled';
+  const errored = downloadableItem?.status === 'error';
+  const downloadedSuccessfully = downloadableItem?.status === 'downloaded';
+
+  const progressText = downloadedSuccessfully
+    ? `${currentSongTitle} downloaded successfully`
+    : cancelled
+    ? `${currentSongTitle} cancelled`
+    : errored
+    ? `${currentSongTitle} could not be downloaded at this time`
+    : currentSongTitle || 'Loading...';
+  const buttonText =
+    downloadedSuccessfully || errored || cancelled ? `Clear` : `Cancel`;
   return (
     <div className="w-full flex flex-wrap space-y-2 relative">
       <ProgressBar
         progress={progress}
-        text={currentSongTitle || 'Loading....'}
+        text={progressText}
+        hidePercentage={downloadedSuccessfully || errored || cancelled}
       />
       <div
         ref={downloadableRef}
@@ -45,10 +60,14 @@ const DownloadableItem = ({ item, onCancel }: DownloadableItemProps) => {
             <Button
               className="bg-primary-red text-white
       hover:bg-red-400 h-6"
-              onClick={cancelClickHandler}
+              onClick={
+                downloadedSuccessfully || errored || cancelled
+                  ? clearClickHandler
+                  : cancelClickHandler
+              }
               disabled={!isHover}
             >
-              Cancel
+              {buttonText}
             </Button>
           </DownloadItemControl>
         </DownloadableItemControls>

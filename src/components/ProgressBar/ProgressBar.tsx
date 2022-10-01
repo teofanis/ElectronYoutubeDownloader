@@ -1,9 +1,10 @@
 interface ProgressBarProps {
   progress: number;
   text?: string;
+  hidePercentage?: boolean;
 }
 
-const ProgressBar = ({ progress, text }: ProgressBarProps) => {
+const ProgressBar = ({ progress, text, hidePercentage }: ProgressBarProps) => {
   return (
     <div className="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 mt-10">
       <div
@@ -14,15 +15,18 @@ const ProgressBar = ({ progress, text }: ProgressBarProps) => {
       <span className="absolute left-1 mix-blend-difference  text-white">
         {text}
       </span>
-      <span className="absolute right-1 mix-blend-difference text-white">
-        {progress}%
-      </span>
+      {!hidePercentage && (
+        <span className="absolute right-1 mix-blend-difference text-white">
+          {progress}%
+        </span>
+      )}
     </div>
   );
 };
 
 ProgressBar.defaultProps = {
   text: '',
+  hidePercentage: false,
 };
 
 export default ProgressBar;

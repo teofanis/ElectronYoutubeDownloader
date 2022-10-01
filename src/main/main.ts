@@ -143,18 +143,18 @@ app
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url } = arg;
   const replyEvent = getLinkChannelName(url, CONSTANTS.DOWNLOAD);
+
+  // eslint-disable-next-line promise/catch-or-return
   downloadMP3(url, mainWindow as BrowserWindow)
     .then((res) => {
-      console.log(`response here from main`, res);
-      event.reply(replyEvent, res);
+      event.reply(replyEvent, { status: res.status });
     })
     .catch((error) => {
-      console.log(error);
-      event.reply(replyEvent, error);
+      event.reply(replyEvent, { status: 'error', message: error });
     });
 });
 
-ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event, _args) => {
+ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event) => {
   const { dialog } = require('electron');
   const selectedFile = dialog.showOpenDialogSync({
     properties: ['openFile'],
@@ -163,6 +163,12 @@ ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event, _args) => {
   if (!selectedFile?.length) {
     return;
   }
+
+  let reply = {
+    status: 'success',
+    file: selectedFile[0],
+    data: [],
+  };
   try {
     const fs = require('fs');
     const data = fs.readFileSync(selectedFile[0], 'utf8');
@@ -170,21 +176,11 @@ ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event, _args) => {
     const validatedUrls = urls
       .map((url: string) => url.trim())
       .filter((url: string) => validateYoutubeLink(url));
-    const downloaded = validatedUrls.map((url: string) =>
-      downloadMP3(url, mainWindow as BrowserWindow)
-    );
-
-    Promise.all(downloaded)
-      .then((res) => {
-        console.log(`response here from main`, res);
-        event.reply(CONSTANTS.DOWNLOAD, res);
-      })
-      .catch((error) => {
-        console.log(error);
-        event.reply(CONSTANTS.DOWNLOAD, error);
-      });
-    // event.reply(CONSTANTS.DOWNLOAD_FILE, validatedUrls);
+    reply = { ...reply, data: validatedUrls };
   } catch (err) {
     console.error(err);
+    reply = { ...reply, status: 'error' };
+  } finally {
+    event.reply(CONSTANTS.DOWNLOAD_FILE, reply);
   }
 });

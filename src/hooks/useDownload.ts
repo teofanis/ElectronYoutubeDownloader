@@ -11,28 +11,40 @@ const useDownload = (youtubeLink: string) => {
   const addCancelationCallback = useDownloaderStore(
     (state) => state.addCancelationCallback
   );
-
-  const [link, setLink] = useState(youtubeLink);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const updateItemStatus = useDownloaderStore(
+    (state) => state.updateItemStatus
+  );
+  const getDownloadQueueItem = useDownloaderStore(
+    (state) => state.getDownloadQueueItem
+  );
+  const [link] = useState(youtubeLink);
   const [currentSongTitle, setCurrentSongTitle] = useState('');
   const [progress, setProgress] = useState(0);
   const [videoMetadata, setVideoMetadata] = useState<MoreVideoDetails>();
+  const downloadableItem = getDownloadQueueItem(link);
+
   const progressHandler = (downloadProgressNumber: any) => {
-    if (!isDownloading) {
-      setIsDownloading(true);
-    }
     setProgress(downloadProgressNumber);
+    if (downloadableItem?.status !== 'downloading') {
+      updateItemStatus(link, 'downloading');
+    }
   };
 
   const stopAndReset = () => {
-    setIsDownloading(false);
     setProgress(0);
-    setCurrentSongTitle('');
     setVideoMetadata(undefined);
   };
-  const downloadResponseHandler = (event: any, data: any) => {
-    console.log(event, data);
-    console.log('Download response handler');
+
+  const downloadResponseHandler = (response: any) => {
+    if (response.status === 'error') {
+      updateItemStatus(link, 'error');
+    }
+    if (response.status === 'success') {
+      updateItemStatus(link, 'downloaded');
+    }
+    if (response.status === 'cancelled') {
+      updateItemStatus(link, 'cancelled');
+    }
     stopAndReset();
   };
 
@@ -58,10 +70,9 @@ const useDownload = (youtubeLink: string) => {
       },
     ];
 
-    LISTENERS.forEach(({ channel, handler }) => {
-      console.log('Adding listener', channel);
-      ipcRenderer.on(channel, handler);
-    });
+    LISTENERS.forEach(({ channel, handler }) =>
+      ipcRenderer.on(channel, handler)
+    );
     return () =>
       LISTENERS.forEach(({ channel }) =>
         ipcRenderer.removeAllListeners(channel)
@@ -75,16 +86,12 @@ const useDownload = (youtubeLink: string) => {
       CONSTANTS.CANCEL_DOWNLOAD
     ) as Channels;
     ipcRenderer.sendMessage(event, []);
+    updateItemStatus(link, 'cancelled');
     stopAndReset();
   };
 
-  const downloadFromFile = () => {
-    const event = getLinkChannelName(link, CONSTANTS.DOWNLOAD_FILE) as Channels;
-    ipcRenderer.sendMessage(event, []);
-  };
-
   const download = (url: string) => {
-    setIsDownloading(true);
+    if (downloadableItem?.status === 'downloaded') return;
     ipcRenderer.sendMessage(CONSTANTS.DOWNLOAD, {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -94,12 +101,11 @@ const useDownload = (youtubeLink: string) => {
   };
 
   return {
-    isDownloading,
+    downloadableItem,
     download,
     progress,
     currentSongTitle,
     cancel,
-    downloadFromFile,
     videoMetadata,
   };
 };

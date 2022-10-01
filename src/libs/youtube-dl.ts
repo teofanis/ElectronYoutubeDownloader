@@ -25,7 +25,7 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   });
 
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
-  return new Promise((resolve, reject) => {
+  return new Promise<{ status: string }>((resolve, reject) => {
     return (
       ytdl
         .getInfo(youtubeLink)
@@ -46,7 +46,7 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
             audioStream.destroy();
             fileStream.close();
             fs.unlink(downloadPath, () => {});
-            resolve(`${title} download was cancelled`);
+            resolve({ status: 'cancelled' });
           };
 
           audioStream.on('response', (response) => {
@@ -63,9 +63,6 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
               }
               downloaded += data.length;
               const percentage = ((downloaded / fileSize) * 100).toFixed(2);
-
-              console.log(`Percentage ${percentage}`);
-              console.log(`EVENT ${progressUpdateEvent}`);
               win.webContents.send(progressUpdateEvent, percentage);
             });
           });
@@ -77,16 +74,15 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
 
           audioStream.on('end', () => {
             fileStream.close();
-            resolve(`${title} was downloaded successfully!`);
+            resolve({ status: 'success' });
           });
 
           audioStream.pipe(fileStream);
         })
         .catch((error) => {
-          console.log('WTF');
           reject(error);
         })
-        .finally(() => console.log('It is what it is...'))
+      // .finally(() => console.log('It is what it is...'))
     );
   });
 }

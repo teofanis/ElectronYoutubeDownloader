@@ -9,7 +9,15 @@ import {
 import useDownloaderStore from 'hooks/useDownloaderStore';
 import React, { useEffect, useRef, useState } from 'react';
 import { validateYoutubeLink } from 'utils';
+import { CONSTANTS } from 'utils/constants';
 
+const { ipcRenderer } = window.electron;
+
+const downloadFromFile = () => {
+  const event = CONSTANTS.DOWNLOAD_FILE;
+  const reply = ipcRenderer.sendMessage(event, []);
+  console.log(reply);
+};
 const Downloader = () => {
   const downloadQueue = useDownloaderStore((state) => state.downloadQueue);
   const clearCancelationCallbacks = useDownloaderStore(
@@ -21,10 +29,9 @@ const Downloader = () => {
   const addToDownloadQueue = useDownloaderStore(
     (state) => state.addToDownloadQueue
   );
-  const removeFromDownloadQueue = useDownloaderStore(
-    (state) => state.removeFromDownloadQueue
-  );
+
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
+  const [fileError, setFileError] = useState('');
   const [urlError, setUrlError] = useState('');
   const textInputRef = useRef<HTMLInputElement>(null);
 
@@ -56,7 +63,7 @@ const Downloader = () => {
 
   const fileClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    // downloadFromFile();
+    downloadFromFile();
   };
   useEffect(() => {
     const textInputHasValue = textInputRef.current?.value.trim() !== '';
@@ -74,7 +81,29 @@ const Downloader = () => {
     if (downloadQueue.length === 0) {
       setDownloadHasStarted(false);
     }
-  }, [downloadQueue]);
+  }, []);
+
+  const downloadFromFileHandler = (response: any): void => {
+    if (response && response?.status === 'success') {
+      const data = response?.data;
+      const file = response?.file;
+      data.forEach(addToDownloadQueue);
+      console.log(data, file);
+      return;
+    }
+    if (response?.status === 'error') {
+      setFileError('Failed to download from file.');
+    }
+  };
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ipcRenderer.on(CONSTANTS.DOWNLOAD_FILE, downloadFromFileHandler);
+    return () => {
+      ipcRenderer.removeAllListeners(CONSTANTS.DOWNLOAD_FILE);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const disableDownloadButton = Boolean(urlError) || downloadQueue.length === 0;
   return (
@@ -100,7 +129,9 @@ const Downloader = () => {
             id="sourceList"
             accept=".txt"
             onClick={fileClickHandler}
+            errored={Boolean(fileError)}
           />
+          <InputError error={fileError} />
         </div>
       </div>
       <hr className="mt-10" />
@@ -108,11 +139,7 @@ const Downloader = () => {
         {downloadHasStarted && (
           <>
             {downloadQueue.map((item) => (
-              <DownloadableItem
-                key={item.url}
-                item={item}
-                onCancel={removeFromDownloadQueue}
-              />
+              <DownloadableItem key={item.url} item={item} />
             ))}
           </>
         )}
