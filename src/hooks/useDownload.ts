@@ -3,10 +3,15 @@ import { useEffect, useState } from 'react';
 import { CONSTANTS } from 'utils/constants';
 import getLinkChannelName from 'utils/getLinkChannelName';
 import { MoreVideoDetails } from 'ytdl-core';
+import useDownloaderStore from './useDownloaderStore';
 
 const { ipcRenderer } = window.electron;
 
 const useDownload = (youtubeLink: string) => {
+  const addCancelationCallback = useDownloaderStore(
+    (state) => state.addCancelationCallback
+  );
+
   const [link, setLink] = useState(youtubeLink);
   const [isDownloading, setIsDownloading] = useState(false);
   const [currentSongTitle, setCurrentSongTitle] = useState('');
@@ -85,6 +90,7 @@ const useDownload = (youtubeLink: string) => {
       // @ts-ignore
       url,
     });
+    addCancelationCallback(cancel);
   };
 
   return {

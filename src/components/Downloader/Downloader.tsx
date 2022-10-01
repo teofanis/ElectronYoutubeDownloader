@@ -6,31 +6,27 @@ import {
   InputError,
   TextInput,
 } from 'components';
+import useDownloaderStore from 'hooks/useDownloaderStore';
 import React, { useEffect, useRef, useState } from 'react';
 import { validateYoutubeLink } from 'utils';
-import store, { MainStore } from '../../store/store';
 
 const Downloader = () => {
-  const downloadQueue = store.useStore((state) => state.downloadQueue);
+  const downloadQueue = useDownloaderStore((state) => state.downloadQueue);
+  const clearCancelationCallbacks = useDownloaderStore(
+    (state) => state.clearCancelationCallbacks
+  );
+  const cancelationCallbacks = useDownloaderStore(
+    (state) => state.cancelationCallbacks
+  );
+  const addToDownloadQueue = useDownloaderStore(
+    (state) => state.addToDownloadQueue
+  );
+  const removeFromDownloadQueue = useDownloaderStore(
+    (state) => state.removeFromDownloadQueue
+  );
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
   const [urlError, setUrlError] = useState('');
   const textInputRef = useRef<HTMLInputElement>(null);
-
-  function setStoreValue<T>(key: keyof MainStore, value: T) {
-    const currentState = store.getState();
-    store.setState({ ...currentState, [key]: value });
-  }
-  const addToDownloadQueue = (url: string) => {
-    const newDownloadQueue = [...downloadQueue, { url }].filter(
-      (item, index, self) => self.findIndex((t) => t.url === item.url) === index
-    );
-    setStoreValue('downloadQueue', newDownloadQueue);
-  };
-
-  const removeItemFromDownloadQueue = (url: string) => {
-    const newDownloadQueue = downloadQueue.filter((item) => item.url !== url);
-    setStoreValue('downloadQueue', newDownloadQueue);
-  };
 
   const urlBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
     const link = e.target.value.trim();
@@ -50,14 +46,12 @@ const Downloader = () => {
 
   console.log(downloadQueue);
 
-  const downloadClickHandler = () => {
-    setDownloadHasStarted(true);
-    // download(url);
-  };
+  const downloadClickHandler = () => setDownloadHasStarted(true);
 
   const cancelClickHandler = () => {
-    console.log('cancel');
     setDownloadHasStarted(false);
+    cancelationCallbacks.forEach((callback) => callback());
+    clearCancelationCallbacks();
   };
 
   const fileClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -117,7 +111,7 @@ const Downloader = () => {
               <DownloadableItem
                 key={item.url}
                 item={item}
-                onCancel={removeItemFromDownloadQueue}
+                onCancel={removeFromDownloadQueue}
               />
             ))}
           </>
@@ -128,7 +122,9 @@ const Downloader = () => {
         {downloadHasStarted ? (
           <CancelButton
             onClick={cancelClickHandler}
-            text="Cancel"
+            text={`Cancel${
+              downloadQueue.length > 1 ? ` (${downloadQueue.length})` : ''
+            }`}
             disabled={!downloadHasStarted}
           />
         ) : (
