@@ -4,6 +4,15 @@ import { DownloadableItem } from 'components';
 
 describe('DownloadableItem Test', () => {
   it('should render', () => {
-    expect(render(<DownloadableItem>Test</DownloadableItem>)).toBeTruthy();
+    expect(
+      render(
+        <DownloadableItem
+          item={{
+            url: '',
+            status: 'error',
+          }}
+        />
+      )
+    ).toBeTruthy();
   });
 });

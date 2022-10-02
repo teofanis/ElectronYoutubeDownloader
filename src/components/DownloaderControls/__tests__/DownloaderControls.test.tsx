@@ -4,6 +4,18 @@ import { DownloaderControls } from 'components';
 
 describe('DownloaderControls Test', () => {
   it('should render', () => {
-    expect(render(<DownloaderControls>Test</DownloaderControls>)).toBeTruthy();
+    expect(
+      render(
+        <DownloaderControls
+          hasActiveDownloads={false}
+          downloadHasStarted={false}
+          disableDownloadButton={false}
+          downloadClickHandler={jest.fn()}
+          clearClickHandler={jest.fn()}
+          cancelClickHandler={jest.fn()}
+          downloadQueueLength={0}
+        />
+      )
+    ).toBeTruthy();
   });
 });

@@ -28,7 +28,7 @@ const useDownloaderStore = create<DownloaderStore>()((set, get) => ({
     }));
   },
   clearCancelationCallbacks: () => {
-    set((state) => ({
+    set((_state) => ({
       cancelationCallbacks: [],
     }));
   },
@@ -53,7 +53,7 @@ const useDownloaderStore = create<DownloaderStore>()((set, get) => ({
     return get().downloadQueue.find((item) => item.url === link);
   },
   clearDownloadQueue: () => {
-    set((state) => ({
+    set((_state) => ({
       downloadQueue: [],
     }));
   },

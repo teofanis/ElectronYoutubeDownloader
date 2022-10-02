@@ -4,6 +4,8 @@ import { DownloadableItemControls } from 'components';
 
 describe('DownloadableItemControls Test', () => {
   it('should render', () => {
-    expect(render(<DownloadableItemControls>Test</DownloadableItemControls>)).toBeTruthy();
+    expect(
+      render(<DownloadableItemControls show>Test</DownloadableItemControls>)
+    ).toBeTruthy();
   });
 });
