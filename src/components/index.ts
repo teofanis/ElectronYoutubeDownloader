@@ -1,18 +1,21 @@
 // eslint-disable-next-line import/prefer-default-export
-import { Downloader } from 'components/Downloader';
-import { Heading } from 'components/Heading';
-import { Layout } from 'components/Layout';
-import { Logo } from 'components/Logo';
-import { TextInput } from 'components/TextInput';
-import { FileInput } from 'components/FileInput';
 import { Button } from 'components/Button';
-import { DownloadButton } from 'components/DownloadButton';
-import { InputError } from 'components/InputError';
-import { ProgressBar } from 'components/ProgressBar';
 import { CancelButton } from 'components/CancelButton';
 import { DownloadableItem } from 'components/DownloadableItem';
 import { DownloadableItemControls } from 'components/DownloadableItemControls';
+import { DownloadableItemTransition } from 'components/DownloadableItemTransition';
+import { DownloadableItemTransitionContainer } from 'components/DownloadableItemTransitionContainer';
+import { DownloadButton } from 'components/DownloadButton';
+import { Downloader } from 'components/Downloader';
 import { DownloadItemControl } from 'components/DownloadItemControl';
+import { FileInput } from 'components/FileInput';
+import { Heading } from 'components/Heading';
+import { InputError } from 'components/InputError';
+import { Layout } from 'components/Layout';
+import { Logo } from 'components/Logo';
+import { ProgressBar } from 'components/ProgressBar';
+import { TextInput } from 'components/TextInput';
+import { DownloadableItemTransition } from 'components/DownloadableItemTransition';
 // Automatic import of components
 export {
   Layout,
@@ -29,5 +32,8 @@ export {
   DownloadableItem,
   DownloadableItemControls,
   DownloadItemControl,
+  DownloadableItemTransitionContainer,
+  DownloadableItemTransition,
+  DownloadableItemTransition,
   // Automatic export of components
 };

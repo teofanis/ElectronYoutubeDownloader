@@ -3,6 +3,8 @@ import {
   Button,
   CancelButton,
   DownloadableItem,
+  DownloadableItemTransition,
+  DownloadableItemTransitionContainer,
   DownloadButton,
   FileInput,
   InputError,
@@ -142,15 +144,13 @@ const Downloader = () => {
         </div>
       </div>
       <hr className="mt-10" />
-      <div>
-        {downloadHasStarted && (
-          <>
-            {downloadQueue.map((item) => (
-              <DownloadableItem key={item.url} item={item} />
-            ))}
-          </>
-        )}
-      </div>
+      <DownloadableItemTransitionContainer show={downloadHasStarted}>
+        {downloadQueue.map((item) => (
+          <DownloadableItemTransition key={item.url}>
+            <DownloadableItem item={item} />
+          </DownloadableItemTransition>
+        ))}
+      </DownloadableItemTransitionContainer>
 
       <div className="flex justify-center mt-10">
         {downloadHasStarted && hasActiveDownload ? (
