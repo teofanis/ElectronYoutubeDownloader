@@ -33,7 +33,7 @@ const Downloader = () => {
   const clearDownloadQueue = useDownloaderStore(
     (state) => state.clearDownloadQueue
   );
-
+  const [selectedFile, setSelectedFile] = useState(null);
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
   const [fileError, setFileError] = useState('');
   const [urlError, setUrlError] = useState('');
@@ -65,8 +65,7 @@ const Downloader = () => {
     clearCancelationCallbacks();
   };
 
-  const fileClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
-    e.preventDefault();
+  const fileClickHandler = () => {
     openFileDialog();
   };
   useEffect(() => {
@@ -93,6 +92,7 @@ const Downloader = () => {
       const file = response?.file;
       data.forEach(addToDownloadQueue);
       console.log(data, file);
+      setSelectedFile(file);
       return;
     }
     if (response?.status === 'error') {
@@ -132,11 +132,12 @@ const Downloader = () => {
         <div className="flex flex-1">
           <FileInput
             name="sourceList"
-            label="Choose a File"
+            label={selectedFile ? 'Selected File' : 'Choose a File'}
             id="sourceList"
             accept=".txt"
             onClick={fileClickHandler}
             errored={Boolean(fileError)}
+            value={selectedFile || ''}
           />
           <InputError error={fileError} />
         </div>

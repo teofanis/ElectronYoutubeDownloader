@@ -163,10 +163,9 @@ ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event) => {
   if (!selectedFile?.length) {
     return;
   }
-
   let reply = {
     status: 'success',
-    file: selectedFile[0],
+    file: path.basename(selectedFile[0]),
     data: [],
   };
   try {
