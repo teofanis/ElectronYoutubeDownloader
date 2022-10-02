@@ -13,6 +13,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import { downloadMP3 } from '../libs/youtube-dl';
+import { getLinkChannelName, validateYoutubeLink } from '../utils';
 import { CONSTANTS } from '../utils/constants';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -141,26 +142,44 @@ app
 
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url } = arg;
+  const replyEvent = getLinkChannelName(url, CONSTANTS.DOWNLOAD);
+
+  // eslint-disable-next-line promise/catch-or-return
   downloadMP3(url, mainWindow as BrowserWindow)
     .then((res) => {
-      console.log(`response here from main`, res);
-      event.reply(CONSTANTS.DOWNLOAD, res);
+      event.reply(replyEvent, { status: res.status });
     })
     .catch((error) => {
-      console.log(error);
-      event.reply(CONSTANTS.DOWNLOAD, error);
+      event.reply(replyEvent, { status: 'error', message: error });
     });
 });
 
-ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (_event, _args) => {
+ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event) => {
   const { dialog } = require('electron');
   const selectedFile = dialog.showOpenDialogSync({
     properties: ['openFile'],
-    filters: [{ name: 'Text Filees', extensions: ['txt'] }],
+    filters: [{ name: 'Text Files', extensions: ['txt'] }],
   });
-  console.log(selectedFile);
   if (!selectedFile?.length) {
     return;
   }
-  console.log(path.resolve(selectedFile[0]));
+  let reply = {
+    status: 'success',
+    file: path.basename(selectedFile[0]),
+    data: [],
+  };
+  try {
+    const fs = require('fs');
+    const data = fs.readFileSync(selectedFile[0], 'utf8');
+    const urls = data.trim().split('\n');
+    const validatedUrls = urls
+      .map((url: string) => url.trim())
+      .filter((url: string) => validateYoutubeLink(url));
+    reply = { ...reply, data: validatedUrls };
+  } catch (err) {
+    console.error(err);
+    reply = { ...reply, status: 'error' };
+  } finally {
+    event.reply(CONSTANTS.DOWNLOAD_FILE, reply);
+  }
 });

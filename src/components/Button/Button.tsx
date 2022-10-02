@@ -16,6 +16,7 @@ const Button = ({
        rounded-lg
        font-semibold py-2 px-4 inline-flex items-center cursor-pointer
        transition duration-500 ease-in-out transform hover:-translate-y-1 focus:outline-none
+       hover:shadow-lg
        focus:shadow-outline
        focus:ring-2
        ring-offset-current ring-offset-2

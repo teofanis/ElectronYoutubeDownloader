@@ -1,23 +1,22 @@
+import React from 'react';
+
 interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errored?: boolean;
 }
-
-const TextInput = ({
-  name,
-  id,
-  placeholder,
-  onChange,
-  className,
-  value,
-  errored,
-}: TextInputProps) => {
-  return (
-    <input
-      id={id}
-      type="text"
-      name={name}
-      placeholder={placeholder}
-      className={`
+type TextInputRef = HTMLInputElement;
+const TextInput = React.forwardRef<TextInputRef, TextInputProps>(
+  (
+    { name, id, placeholder, onChange, onBlur, className, value, errored },
+    ref
+  ) => {
+    return (
+      <input
+        ref={ref}
+        id={id}
+        type="text"
+        name={name}
+        placeholder={placeholder}
+        className={`
       text-black flex-1
               placeholder-gray-800
               px-4 py-2.5 mt-2
@@ -37,11 +36,13 @@ const TextInput = ({
               }
               ${className}
       `}
-      onChange={onChange}
-      value={value}
-    />
-  );
-};
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
+      />
+    );
+  }
+);
 
 TextInput.defaultProps = {
   errored: false,

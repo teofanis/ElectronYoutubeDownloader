@@ -10,12 +10,11 @@ In use by family members and close friends.
 
 ## Demo
 
-- v0.0.1
-  ![YoutubeDownloaderDemo](https://user-images.githubusercontent.com/47872542/189547923-bc6b680f-f20a-4f5b-bfa0-2d96c6e24084.gif)
-
+![electronV004demo](https://user-images.githubusercontent.com/47872542/193476486-8f3b3db3-e99b-45ab-b802-fc82849542a2.gif)
+ 
 ## Pending Items / Improvements
 
-- Download multiple songs from TXT file
+- ~~Download multiple songs from TXT file~~
 - Expose More Options from ytbl (video, quality, etc..)
 - Improve Design / UX
 - Add a settings page

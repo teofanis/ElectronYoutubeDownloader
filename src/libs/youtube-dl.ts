@@ -2,18 +2,30 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 /* eslint-disable import/prefer-default-export */
 import fs from 'fs';
 import path from 'path';
-import { sanitizeFileName } from 'utils';
 import ytdl from 'ytdl-core';
+import { getLinkChannelName, sanitizeFileName } from '../utils';
 import { CONSTANTS } from '../utils/constants';
 
 export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
   let isCancelled = false;
-  ipcMain.on(CONSTANTS.CANCEL_DOWNLOAD, () => {
+  const progressUpdateEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.PROGRESS_UPDATE
+  );
+  const currentMetadataEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.CURRENT_DOWNLOAD_META_DATA
+  );
+  const cancelEvent = getLinkChannelName(
+    youtubeLink,
+    CONSTANTS.CANCEL_DOWNLOAD
+  );
+  ipcMain.on(cancelEvent, () => {
     isCancelled = true;
   });
 
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
-  return new Promise((resolve, reject) => {
+  return new Promise<{ status: string }>((resolve, reject) => {
     return (
       ytdl
         .getInfo(youtubeLink)
@@ -34,11 +46,12 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
             audioStream.destroy();
             fileStream.close();
             fs.unlink(downloadPath, () => {});
-            resolve(`${title} download was cancelled`);
+            resolve({ status: 'cancelled' });
           };
+
           audioStream.on('response', (response) => {
             const fileSize = response.headers['content-length'];
-            win.webContents.send(CONSTANTS.CURRENT_DOWNLOAD_META_DATA, {
+            win.webContents.send(currentMetadataEvent, {
               fileSize,
               title,
               videoDetails,
@@ -50,8 +63,7 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
               }
               downloaded += data.length;
               const percentage = ((downloaded / fileSize) * 100).toFixed(2);
-              // console.log(`Percentage ${percentage}`);
-              win.webContents.send(CONSTANTS.PROGRESS_UPDATE, percentage);
+              win.webContents.send(progressUpdateEvent, percentage);
             });
           });
 
@@ -62,16 +74,15 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
 
           audioStream.on('end', () => {
             fileStream.close();
-            resolve(`${title} was downloaded successfully!`);
+            resolve({ status: 'success' });
           });
 
           audioStream.pipe(fileStream);
         })
         .catch((error) => {
-          console.log('WTF');
           reject(error);
         })
-        .finally(() => console.log('It is what it is...'))
+      // .finally(() => console.log('It is what it is...'))
     );
   });
 }
