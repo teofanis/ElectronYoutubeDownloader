@@ -46,7 +46,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const buttonText =
     downloadedSuccessfully || errored || cancelled ? `Clear` : `Cancel`;
   return (
-    <div className="w-full flex flex-wrap space-y-2 relative">
+    <div className="w-full flex flex-wrap space-y-2 relative mt-4">
       <ProgressBar
         progress={progress}
         text={progressText}
@@ -54,7 +54,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
       />
       <div
         ref={downloadableRef}
-        className="absolute top-8 w-full h-6 cursor-pointer"
+        className="absolute bottom-0 w-full h-6 cursor-pointer"
       >
         <DownloadableItemControls show={isHover}>
           {errored ||
