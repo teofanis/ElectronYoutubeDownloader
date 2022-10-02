@@ -1,15 +1,13 @@
-/* eslint-disable no-nested-ternary */
 import {
-  Button,
-  CancelButton,
   DownloadableItem,
   DownloadableItemTransition,
   DownloadableItemTransitionContainer,
-  DownloadButton,
+  DownloaderControls,
   FileInput,
   InputError,
   TextInput,
 } from 'components';
+
 import useDownloaderStore from 'hooks/useDownloaderStore';
 import React, { useEffect, useRef, useState } from 'react';
 import { validateYoutubeLink } from 'utils';
@@ -152,35 +150,15 @@ const Downloader = () => {
         ))}
       </DownloadableItemTransitionContainer>
 
-      <div className="flex justify-center mt-10">
-        {downloadHasStarted && hasActiveDownload ? (
-          <CancelButton
-            onClick={cancelClickHandler}
-            text={`Cancel${
-              downloadQueue.length > 1 ? ` (${downloadQueue.length})` : ''
-            }`}
-            disabled={!downloadHasStarted}
-          />
-        ) : downloadHasStarted ? (
-          <Button
-            className="bg-gray-300
-      hover:bg-gray-100"
-            onClick={clearClickHandler}
-          >
-            {`Clear${
-              downloadQueue.length > 0 ? ` (${downloadQueue.length})` : ''
-            }`}
-          </Button>
-        ) : (
-          <DownloadButton
-            text={`Download${
-              downloadQueue.length > 0 ? ` (${downloadQueue.length})` : ''
-            }`}
-            onClick={downloadClickHandler}
-            disabled={disableDownloadButton}
-          />
-        )}
-      </div>
+      <DownloaderControls
+        disableDownloadButton={disableDownloadButton}
+        hasActiveDownloads={hasActiveDownload}
+        downloadClickHandler={downloadClickHandler}
+        clearClickHandler={clearClickHandler}
+        cancelClickHandler={cancelClickHandler}
+        downloadHasStarted={downloadHasStarted}
+        downloadQueueLength={downloadQueue.length}
+      />
     </div>
   );
 };

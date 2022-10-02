@@ -7,6 +7,7 @@ import { DownloadableItemTransition } from 'components/DownloadableItemTransitio
 import { DownloadableItemTransitionContainer } from 'components/DownloadableItemTransitionContainer';
 import { DownloadButton } from 'components/DownloadButton';
 import { Downloader } from 'components/Downloader';
+import { DownloaderControls } from 'components/DownloaderControls';
 import { DownloadItemControl } from 'components/DownloadItemControl';
 import { FileInput } from 'components/FileInput';
 import { Heading } from 'components/Heading';
@@ -15,7 +16,6 @@ import { Layout } from 'components/Layout';
 import { Logo } from 'components/Logo';
 import { ProgressBar } from 'components/ProgressBar';
 import { TextInput } from 'components/TextInput';
-import { DownloadableItemTransition } from 'components/DownloadableItemTransition';
 // Automatic import of components
 export {
   Layout,
@@ -34,6 +34,6 @@ export {
   DownloadItemControl,
   DownloadableItemTransitionContainer,
   DownloadableItemTransition,
-  DownloadableItemTransition,
+  DownloaderControls,
   // Automatic export of components
 };
