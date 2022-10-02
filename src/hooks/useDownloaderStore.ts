@@ -10,6 +10,7 @@ interface DownloaderStore {
   removeFromDownloadQueue: (link: string) => void;
   updateItemStatus: (link: string, status: DownloadStatus) => void;
   getDownloadQueueItem: (link: string) => DownloadQueueItem | undefined;
+  clearDownloadQueue: () => void;
 }
 
 const pushIfNotPresent = (
@@ -50,6 +51,11 @@ const useDownloaderStore = create<DownloaderStore>()((set, get) => ({
     })),
   getDownloadQueueItem: (link: string) => {
     return get().downloadQueue.find((item) => item.url === link);
+  },
+  clearDownloadQueue: () => {
+    set((state) => ({
+      downloadQueue: [],
+    }));
   },
 }));
 

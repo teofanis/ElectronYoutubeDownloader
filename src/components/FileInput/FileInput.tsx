@@ -1,26 +1,23 @@
+import React from 'react';
+
 interface FileInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   errored?: boolean;
 }
 
-const FileInput = ({
-  id,
-  className,
-  label,
-  name,
-  onChange,
-  onClick,
-  errored,
-}: FileInputProps) => {
-  return (
-    <label htmlFor="fileUpload" className="block bg-white rounded-lg flex-1">
-      <span className="sr-only">{label}</span>
-      <input
-        id={id}
-        type="file"
-        name={name}
-        onClick={onClick}
-        className={`block
+type FileInputRef = HTMLInputElement;
+const FileInput = React.forwardRef<FileInputRef, FileInputProps>(
+  ({ id, className, label, name, onChange, onClick, errored }, ref) => {
+    return (
+      <label htmlFor="fileUpload" className="block bg-white rounded-lg flex-1">
+        <span className="sr-only">{label}</span>
+        <input
+          ref={ref}
+          id={id}
+          type="file"
+          name={name}
+          onClick={onClick}
+          className={`block
                   w-full
                   text-base text-gray-800
                   file:mr-4
@@ -49,11 +46,12 @@ const FileInput = ({
                    }
                   ${className}
                `}
-        onChange={onChange}
-      />
-    </label>
-  );
-};
+          onChange={onChange}
+        />
+      </label>
+    );
+  }
+);
 
 FileInput.defaultProps = {
   errored: false,

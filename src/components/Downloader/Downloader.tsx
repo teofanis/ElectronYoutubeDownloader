@@ -1,4 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import {
+  Button,
   CancelButton,
   DownloadableItem,
   DownloadButton,
@@ -13,10 +15,9 @@ import { CONSTANTS } from 'utils/constants';
 
 const { ipcRenderer } = window.electron;
 
-const downloadFromFile = () => {
+const openFileDialog = () => {
   const event = CONSTANTS.DOWNLOAD_FILE;
-  const reply = ipcRenderer.sendMessage(event, []);
-  console.log(reply);
+  ipcRenderer.sendMessage(event, []);
 };
 const Downloader = () => {
   const downloadQueue = useDownloaderStore((state) => state.downloadQueue);
@@ -28,6 +29,9 @@ const Downloader = () => {
   );
   const addToDownloadQueue = useDownloaderStore(
     (state) => state.addToDownloadQueue
+  );
+  const clearDownloadQueue = useDownloaderStore(
+    (state) => state.clearDownloadQueue
   );
 
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
@@ -55,15 +59,15 @@ const Downloader = () => {
 
   const downloadClickHandler = () => setDownloadHasStarted(true);
 
+  const clearClickHandler = () => clearDownloadQueue();
   const cancelClickHandler = () => {
-    setDownloadHasStarted(false);
     cancelationCallbacks.forEach((callback) => callback());
     clearCancelationCallbacks();
   };
 
   const fileClickHandler = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    downloadFromFile();
+    openFileDialog();
   };
   useEffect(() => {
     const textInputHasValue = textInputRef.current?.value.trim() !== '';
@@ -81,7 +85,7 @@ const Downloader = () => {
     if (downloadQueue.length === 0) {
       setDownloadHasStarted(false);
     }
-  }, []);
+  }, [downloadQueue]);
 
   const downloadFromFileHandler = (response: any): void => {
     if (response && response?.status === 'success') {
@@ -106,6 +110,9 @@ const Downloader = () => {
   }, []);
 
   const disableDownloadButton = Boolean(urlError) || downloadQueue.length === 0;
+  const hasActiveDownload = downloadQueue.some(
+    (item) => item.status === 'downloading'
+  );
   return (
     <div className="max-w-[1500px] mt-10">
       <div className="flex items-baseline space-x-4 justify-around">
@@ -146,7 +153,7 @@ const Downloader = () => {
       </div>
 
       <div className="flex justify-center mt-10">
-        {downloadHasStarted ? (
+        {downloadHasStarted && hasActiveDownload ? (
           <CancelButton
             onClick={cancelClickHandler}
             text={`Cancel${
@@ -154,6 +161,16 @@ const Downloader = () => {
             }`}
             disabled={!downloadHasStarted}
           />
+        ) : downloadHasStarted ? (
+          <Button
+            className="bg-gray-300
+      hover:bg-gray-100"
+            onClick={clearClickHandler}
+          >
+            {`Clear${
+              downloadQueue.length > 0 ? ` (${downloadQueue.length})` : ''
+            }`}
+          </Button>
         ) : (
           <DownloadButton
             text={`Download${

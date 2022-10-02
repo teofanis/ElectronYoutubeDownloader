@@ -30,6 +30,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
 
   const cancelClickHandler = () => cancel();
   const clearClickHandler = () => removeFromDownloadQueue(url);
+  const retryClickHandler = () => download(url);
 
   const cancelled = downloadableItem?.status === 'cancelled';
   const errored = downloadableItem?.status === 'error';
@@ -56,6 +57,19 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
         className="absolute top-8 w-full h-6 cursor-pointer"
       >
         <DownloadableItemControls show={isHover}>
+          {errored ||
+            (cancelled && (
+              <DownloadItemControl>
+                <Button
+                  className="bg-green-400 text-white
+      hover:bg-green-300 h-6"
+                  onClick={retryClickHandler}
+                  disabled={!isHover}
+                >
+                  Retry
+                </Button>
+              </DownloadItemControl>
+            ))}
           <DownloadItemControl>
             <Button
               className="bg-primary-red text-white
