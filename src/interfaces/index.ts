@@ -10,3 +10,8 @@ export type DownloadQueueItem = {
 };
 
 export type DownloadQueue = DownloadQueueItem[];
+
+export type CancelableItem = {
+  link: string;
+  cancel: () => void;
+};

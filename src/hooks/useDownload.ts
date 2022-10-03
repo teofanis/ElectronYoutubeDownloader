@@ -11,6 +11,10 @@ const useDownload = (youtubeLink: string) => {
   const addCancelationCallback = useDownloaderStore(
     (state) => state.addCancelationCallback
   );
+
+  const removeCancelationCallback = useDownloaderStore(
+    (state) => state.removeCancelationCallback
+  );
   const updateItemStatus = useDownloaderStore(
     (state) => state.updateItemStatus
   );
@@ -38,12 +42,15 @@ const useDownload = (youtubeLink: string) => {
   const downloadResponseHandler = (response: any) => {
     if (response.status === 'error') {
       updateItemStatus(link, 'error');
+      removeCancelationCallback(link);
     }
     if (response.status === 'success') {
       updateItemStatus(link, 'downloaded');
+      removeCancelationCallback(link);
     }
     if (response.status === 'cancelled') {
       updateItemStatus(link, 'cancelled');
+      removeCancelationCallback(link);
     }
     stopAndReset();
   };
@@ -97,7 +104,7 @@ const useDownload = (youtubeLink: string) => {
       // @ts-ignore
       url,
     });
-    addCancelationCallback(cancel);
+    addCancelationCallback(link, cancel);
   };
 
   return {

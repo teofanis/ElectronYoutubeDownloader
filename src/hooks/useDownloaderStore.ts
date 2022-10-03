@@ -1,11 +1,17 @@
-import { DownloadQueue, DownloadQueueItem, DownloadStatus } from 'interfaces';
+import {
+  CancelableItem,
+  DownloadQueue,
+  DownloadQueueItem,
+  DownloadStatus,
+} from 'interfaces';
 import create from 'zustand';
 
 interface DownloaderStore {
   downloadQueue: DownloadQueue;
-  cancelationCallbacks: (() => void)[];
+  cancelationCallbacks: CancelableItem[];
   clearCancelationCallbacks: () => void;
-  addCancelationCallback: (callback: () => void) => void;
+  addCancelationCallback: (link: string, callback: () => void) => void;
+  removeCancelationCallback: (link: string) => void;
   addToDownloadQueue: (link: string) => void;
   removeFromDownloadQueue: (link: string) => void;
   updateItemStatus: (link: string, status: DownloadStatus) => void;
@@ -22,9 +28,20 @@ const pushIfNotPresent = (
 const useDownloaderStore = create<DownloaderStore>()((set, get) => ({
   downloadQueue: [],
   cancelationCallbacks: [],
-  addCancelationCallback: (callback: () => void) => {
+  addCancelationCallback: (link: string, callback: () => void) => {
+    const cancelableItem = {
+      link,
+      cancel: callback,
+    };
     set((state) => ({
-      cancelationCallbacks: [...state.cancelationCallbacks, callback],
+      cancelationCallbacks: [...state.cancelationCallbacks, cancelableItem],
+    }));
+  },
+  removeCancelationCallback: (link: string) => {
+    set((state) => ({
+      cancelationCallbacks: [...state.cancelationCallbacks].filter(
+        (item) => item.link !== link
+      ),
     }));
   },
   clearCancelationCallbacks: () => {

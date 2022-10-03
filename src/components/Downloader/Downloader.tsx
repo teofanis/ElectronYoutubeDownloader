@@ -21,8 +21,8 @@ const openFileDialog = () => {
 };
 const Downloader = () => {
   const downloadQueue = useDownloaderStore((state) => state.downloadQueue);
-  const clearCancelationCallbacks = useDownloaderStore(
-    (state) => state.clearCancelationCallbacks
+  const removeCancelationCallback = useDownloaderStore(
+    (state) => state.removeCancelationCallback
   );
   const cancelationCallbacks = useDownloaderStore(
     (state) => state.cancelationCallbacks
@@ -32,6 +32,9 @@ const Downloader = () => {
   );
   const clearDownloadQueue = useDownloaderStore(
     (state) => state.clearDownloadQueue
+  );
+  const getDownloadQueueItem = useDownloaderStore(
+    (state) => state.getDownloadQueueItem
   );
   const [selectedFile, setSelectedFile] = useState(null);
   const [downloadHasStarted, setDownloadHasStarted] = useState(false);
@@ -55,14 +58,20 @@ const Downloader = () => {
     setUrlError('');
   };
 
-  console.log(downloadQueue);
+  console.log(cancelationCallbacks);
 
   const downloadClickHandler = () => setDownloadHasStarted(true);
 
   const clearClickHandler = () => clearDownloadQueue();
   const cancelClickHandler = () => {
-    cancelationCallbacks.forEach((callback) => callback());
-    clearCancelationCallbacks();
+    const cancellableStatuses = ['downloading', 'idle'];
+    cancelationCallbacks.forEach(({ link, cancel }) => {
+      const item = getDownloadQueueItem(link);
+      if (cancellableStatuses?.includes(item?.status || '')) {
+        cancel();
+        removeCancelationCallback(link);
+      }
+    });
   };
 
   const fileClickHandler = () => {
@@ -158,7 +167,7 @@ const Downloader = () => {
         clearClickHandler={clearClickHandler}
         cancelClickHandler={cancelClickHandler}
         downloadHasStarted={downloadHasStarted}
-        downloadQueueLength={downloadQueue.length}
+        downloadQueue={downloadQueue}
       />
     </div>
   );

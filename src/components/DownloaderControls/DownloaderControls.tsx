@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { Button, CancelButton, DownloadButton } from 'components';
+import { DownloadQueue } from 'interfaces';
 
 interface DownloaderControlsProps {
   hasActiveDownloads: boolean;
@@ -8,7 +9,7 @@ interface DownloaderControlsProps {
   downloadClickHandler: () => void;
   clearClickHandler: () => void;
   cancelClickHandler: () => void;
-  downloadQueueLength: number;
+  downloadQueue: DownloadQueue;
 }
 
 const DownloaderControls = ({
@@ -18,16 +19,22 @@ const DownloaderControls = ({
   downloadClickHandler,
   clearClickHandler,
   cancelClickHandler,
-  downloadQueueLength,
+  downloadQueue,
 }: DownloaderControlsProps) => {
+  const cancelableLength = downloadQueue.filter(
+    (item) => item.status === 'downloading'
+  ).length;
+  const downloadableLength = downloadQueue.filter(
+    (item) => item.status === 'idle'
+  ).length;
+
+  const clearableLength = downloadQueue.length;
   return (
     <div className="flex justify-center mt-10">
       {downloadHasStarted && hasActiveDownloads ? (
         <CancelButton
           onClick={cancelClickHandler}
-          text={`Cancel${
-            downloadQueueLength > 1 ? ` (${downloadQueueLength})` : ''
-          }`}
+          text={`Cancel${cancelableLength > 1 ? ` (${cancelableLength})` : ''}`}
           disabled={!downloadHasStarted}
         />
       ) : downloadHasStarted ? (
@@ -36,12 +43,12 @@ const DownloaderControls = ({
       hover:bg-gray-100"
           onClick={clearClickHandler}
         >
-          {`Clear${downloadQueueLength > 0 ? ` (${downloadQueueLength})` : ''}`}
+          {`Clear${clearableLength > 0 ? ` (${clearableLength})` : ''}`}
         </Button>
       ) : (
         <DownloadButton
           text={`Download${
-            downloadQueueLength > 0 ? ` (${downloadQueueLength})` : ''
+            downloadableLength > 0 ? ` (${downloadableLength})` : ''
           }`}
           onClick={downloadClickHandler}
           disabled={disableDownloadButton}
