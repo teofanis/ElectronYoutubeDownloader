@@ -1,4 +1,4 @@
-import { Downloader, Heading, Layout, Logo } from 'components';
+import { Downloader, Heading, Layout, Logo } from 'renderer/components';
 
 const Home = () => {
   return (
