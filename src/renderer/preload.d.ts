@@ -1,8 +1,16 @@
+import { IpcRequest, PromisedIpcResponse } from 'interfaces';
 import { Channels } from 'main/preload';
 
 declare global {
   interface Window {
     electron: {
+      ipc: {
+        send: <T>(
+          channel: string,
+          request: IpcRequest
+        ) => PromisedIpcResponse<T>;
+      };
+
       ipcRenderer: {
         removeAllListeners(channel?: Channels | string | null): void;
         sendMessage(channel: Channels, args: unknown[]): void;

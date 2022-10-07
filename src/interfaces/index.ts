@@ -1,3 +1,5 @@
+export * from './IpcChannelInterface';
+export * from './IpcService';
 export type DownloadStatus =
   | 'idle'
   | 'downloading'

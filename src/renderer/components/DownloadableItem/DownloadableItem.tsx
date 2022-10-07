@@ -10,7 +10,6 @@ import {
 } from 'renderer/components';
 import useDownload from 'renderer/hooks/useDownload';
 import useDownloaderStore from 'renderer/hooks/useDownloaderStore';
-import useEffectOnce from 'renderer/hooks/useEffectOnce';
 import useHover from 'renderer/hooks/useHover';
 
 interface DownloadableItemProps {
@@ -24,7 +23,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const removeFromDownloadQueue = useDownloaderStore(
     (state) => state.removeFromDownloadQueue
   );
-  useEffectOnce(() => download(url));
+  // useEffectOnce(() => download(url));
   const downloadableRef = useRef(null);
   const isHover = useHover(downloadableRef);
 

@@ -1,10 +1,18 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
+import { IpcRequest } from 'interfaces';
+import { IpcService } from 'IPC';
 
 import { CONSTANTS } from '../utils/constants';
 
 export type Channels = keyof typeof CONSTANTS | 'ipc-example';
 
+const service = new IpcService(ipcRenderer);
 contextBridge.exposeInMainWorld('electron', {
+  ipc: {
+    send: <T>(channel: string, request: IpcRequest) => {
+      return service.send<T>(channel, request);
+    },
+  },
   ipcRenderer: {
     sendMessage(channel: Channels, args: unknown[]) {
       ipcRenderer.send(channel, args);

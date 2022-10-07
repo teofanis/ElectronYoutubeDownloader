@@ -12,6 +12,8 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
+import { IpcChannelInterface } from '../interfaces';
+import { DownloaderChannel } from '../IPC';
 import { downloadMP3 } from '../libs/youtube-dl';
 import { getLinkChannelName, validateYoutubeLink } from '../utils';
 import { CONSTANTS } from '../utils/constants';
@@ -27,12 +29,6 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -127,6 +123,13 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+const registerIpcChannels = (ipcChannels: IpcChannelInterface[]) => {
+  ipcChannels.forEach((channel) =>
+    ipcMain.on(channel.getName(), (event, request) =>
+      channel.handle(event, request)
+    )
+  );
+};
 
 app
   .whenReady()
@@ -139,6 +142,8 @@ app
     });
   })
   .catch(console.log);
+
+registerIpcChannels([new DownloaderChannel()]);
 
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url } = arg;

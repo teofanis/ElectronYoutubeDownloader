@@ -9,17 +9,26 @@ import {
 } from 'renderer/components';
 
 import React, { useEffect, useRef, useState } from 'react';
+import useDownloaderChannel from 'renderer/hooks/useDownloaderChannel';
 import useDownloaderStore from 'renderer/hooks/useDownloaderStore';
 import { validateYoutubeLink } from 'utils';
-import { CONSTANTS } from 'utils/constants';
 
-const { ipcRenderer } = window.electron;
+// const { ipcRenderer } = window.electron;
 
-const openFileDialog = () => {
-  const event = CONSTANTS.DOWNLOAD_FILE;
-  ipcRenderer.sendMessage(event, []);
-};
+// const openFileDialog = () => {
+//   const event = CONSTANTS.DOWNLOAD_FILE;
+//   ipcRenderer.sendMessage(event, []);
+// };
 const Downloader = () => {
+  const { send } = useDownloaderChannel();
+
+  const openFileDialog = async () => {
+    const response = await send();
+    console.log(response);
+  };
+
+  // console.log(window.electron.ipc);
+  // window.electron.ipc.send('downloader-channel', {});
   const downloadQueue = useDownloaderStore((state) => state.downloadQueue);
   const removeCancelationCallback = useDownloaderStore(
     (state) => state.removeCancelationCallback
@@ -108,15 +117,15 @@ const Downloader = () => {
       setFileError('Failed to download from file.');
     }
   };
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ipcRenderer.on(CONSTANTS.DOWNLOAD_FILE, downloadFromFileHandler);
-    return () => {
-      ipcRenderer.removeAllListeners(CONSTANTS.DOWNLOAD_FILE);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //   // @ts-ignore
+  //   ipcRenderer?.on(CONSTANTS.DOWNLOAD_FILE, downloadFromFileHandler);
+  //   return () => {
+  //     ipcRenderer.removeAllListeners(CONSTANTS.DOWNLOAD_FILE);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const disableDownloadButton = Boolean(urlError) || downloadQueue.length === 0;
   const hasActiveDownload = downloadQueue.some(
