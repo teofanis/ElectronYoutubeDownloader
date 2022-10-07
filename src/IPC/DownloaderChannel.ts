@@ -1,5 +1,5 @@
 /* eslint-disable import/no-named-as-default-member */
-import store from '../main/store';
+import { setState } from '../main/store';
 /* eslint-disable class-methods-use-this */
 import {
   DownloadQueueItem,
@@ -19,21 +19,17 @@ export default class DownloaderChannel implements IpcChannelInterface {
       request.responseChannel = `${this.getName()}_response`;
     }
 
-    const action = request.params?.action;
-    const payload = request.params?.payload;
-    console.log(request);
+    const { action, payload } = request;
     if (!action || !payload) return;
     const { ADD_TO_DOWNLOAD_QUEUE } = DownloaderActions;
     switch (action) {
       case ADD_TO_DOWNLOAD_QUEUE:
-        store.setState((state) => {
-          console.log(state);
+        setState((state) =>
           DownloaderReducer[ADD_TO_DOWNLOAD_QUEUE](
             state,
             payload as DownloadQueueItem
-          );
-        });
-
+          )
+        );
         break;
       default:
         break;

@@ -1,23 +1,24 @@
-import { DownloadQueueItem } from 'interfaces';
+import { DownloadQueue, DownloadQueueItem } from 'interfaces';
 import { StoreShape } from '../store';
 /* eslint-disable import/prefer-default-export */
 import { DownloaderActions } from '../actions/Downloader';
 
-export const DownloaderReducer = {
-  [DownloaderActions.ADD_TO_DOWNLOAD_QUEUE]: (
-    state: StoreShape,
-    payload: DownloadQueueItem
-  ) => {
-    return {
-      ...state,
-      downloadQueue: [...state.downloadQueue, payload],
-    };
-  },
+const pushIfNotPresent = (
+  item: DownloadQueueItem,
+  index: number,
+  array: DownloadQueue
+): boolean => array.findIndex((i) => i.url === item.url) === index;
+
+const addToDownloadQueue = (
+  state: StoreShape,
+  payload: DownloadQueueItem
+): StoreShape => {
+  return {
+    ...state,
+    downloadQueue: [...state.downloadQueue, payload].filter(pushIfNotPresent),
+  };
 };
 
-type DownloaderReducerType = {
-  [key in keyof typeof DownloaderActions]: (
-    state: StoreShape,
-    payload: any
-  ) => StoreShape;
+export const DownloaderReducer = {
+  [DownloaderActions.ADD_TO_DOWNLOAD_QUEUE]: addToDownloadQueue,
 };
