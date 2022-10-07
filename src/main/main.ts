@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -18,6 +19,7 @@ import { downloadMP3 } from '../libs/youtube-dl';
 import { getLinkChannelName, validateYoutubeLink } from '../utils';
 import { CONSTANTS } from '../utils/constants';
 import MenuBuilder from './menu';
+import store from './store';
 import { resolveHtmlPath } from './util';
 
 class AppUpdater {
@@ -144,6 +146,10 @@ app
   .catch(console.log);
 
 registerIpcChannels([new DownloaderChannel()]);
+
+store.subscribe((state) => {
+  console.log(state);
+});
 
 ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
   const { url } = arg;

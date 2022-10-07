@@ -7,7 +7,10 @@ export interface IpcChannelInterface {
 
 export interface IpcRequest {
   responseChannel?: string;
-  params?: unknown[];
+  params?: {
+    action: string;
+    payload: unknown;
+  };
 }
 
 export type IpcResponseType = 'success' | 'failure';

@@ -20,13 +20,20 @@ import { validateYoutubeLink } from 'utils';
 //   ipcRenderer.sendMessage(event, []);
 // };
 const Downloader = () => {
-  const { send } = useDownloaderChannel();
+  const {
+    addToDownloadQueue: addToDownloadQueue1,
+    downloadQueue: downloadQueue1,
+  } = useDownloaderChannel();
 
   const openFileDialog = async () => {
-    const response = await send();
-    console.log(response);
+    const response = await addToDownloadQueue1('great');
+    console.log(downloadQueue1);
+    // window.electron.store.setState((state) => {
+    //   state.downloadQueue.push('x');
+    // });
   };
 
+  console.log(downloadQueue1);
   // console.log(window.electron.ipc);
   // window.electron.ipc.send('downloader-channel', {});
   const downloadQueue = useDownloaderStore((state) => state.downloadQueue);

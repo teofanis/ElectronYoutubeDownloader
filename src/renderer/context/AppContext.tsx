@@ -10,6 +10,7 @@ interface AppProviderProps {
   children: React.ReactNode;
   ipc: Window['electron']['ipc'];
 }
+
 const AppProvider = ({ children, ipc }: AppProviderProps) => {
   return <AppContext.Provider value={{ ipc }}>{children}</AppContext.Provider>;
 };
@@ -24,10 +25,12 @@ const useAppContext = () => {
 
 const prepareRequest = (
   responseChannel: string | null | undefined,
-  ...args: unknown[]
+  action: string,
+  payload: unknown
 ): IpcRequest => {
   const request = {
-    params: args,
+    action,
+    payload,
   } as IpcRequest;
   if (responseChannel) {
     request.responseChannel = responseChannel;
@@ -39,12 +42,13 @@ const prepareRequest = (
 const useIpc = (channel: string) => {
   const { ipc } = useAppContext();
 
-  function send<T>(...args: unknown[]) {
-    const request = prepareRequest(null, ...args);
+  function send<T>(action: string, payload: unknown) {
+    const request = prepareRequest(null, action, payload);
     const response = ipc.send<T>(channel, request);
     return response;
   }
 
   return { ipc, send };
 };
+
 export { AppProvider, useIpc, useAppContext };

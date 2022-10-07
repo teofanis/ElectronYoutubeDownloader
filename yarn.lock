@@ -3685,6 +3685,11 @@ electron-rebuild@^3.2.9:
     tar "^6.0.5"
     yargs "^17.0.1"
 
+electron-shared-state@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/electron-shared-state/-/electron-shared-state-1.0.0.tgz#67dd15d0061414888c3e30e81dbd739ccdac7a10"
+  integrity sha512-MTrniWxrWUek9FfBNgS+wJHBtTtnx7qd3gPlL+0JEwJ9KMDSSDNV5JjDfGDPAJt5/c9Jpsvd80/GxvWA2txpZw==
+
 electron-to-chromium@^1.4.251:
   version "1.4.261"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.261.tgz#31f14ad60c6f95bec404a77a2fd5e1962248e112"
