@@ -2,10 +2,13 @@ import '@testing-library/jest-dom';
 
 Object.assign(window, {
   electron: {
-    ipcRenderer: {
-      on: jest.fn(),
-      sendMessage: jest.fn(),
-      removeAllListeners: jest.fn(),
+    store: {
+      getState: jest.fn(),
+      setState: jest.fn(),
+      subscribe: jest.fn(),
+    },
+    ipc: {
+      send: jest.fn(),
     },
   },
 });

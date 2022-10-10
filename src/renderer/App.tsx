@@ -1,5 +1,5 @@
-import { Home } from 'pages';
 import { MemoryRouter as Router, Route, Routes } from 'react-router-dom';
+import { Home } from 'renderer/pages';
 import { AppProvider } from './context/AppContext';
 import './global.css';
 

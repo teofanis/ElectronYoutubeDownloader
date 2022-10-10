@@ -1,4 +1,5 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+/* eslint-disable import/no-named-as-default-member */
+import { contextBridge, ipcRenderer } from 'electron';
 import { IpcRequest } from 'interfaces';
 import { IpcService } from 'IPC';
 import store from 'main/store';
@@ -19,24 +20,6 @@ contextBridge.exposeInMainWorld('electron', {
   ipc: {
     send: <T>(channel: string, request: IpcRequest) => {
       return service.send<T>(channel, request);
-    },
-  },
-  ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
-      ipcRenderer.send(channel, args);
-    },
-    on(channel: Channels, func: (...args: unknown[]) => void) {
-      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
-        func(...args);
-      ipcRenderer.on(channel, subscription);
-
-      return () => ipcRenderer.removeListener(channel, subscription);
-    },
-    once(channel: Channels, func: (...args: unknown[]) => void) {
-      ipcRenderer.once(channel, (_event, ...args) => func(...args));
-    },
-    removeAllListeners(channel?: Channels | string | null) {
-      ipcRenderer.removeAllListeners(channel || '');
     },
   },
 });

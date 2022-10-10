@@ -3,8 +3,6 @@ import { DownloadQueue } from 'interfaces';
 import { Button, CancelButton, DownloadButton } from 'renderer/components';
 
 interface DownloaderControlsProps {
-  hasActiveDownloads: boolean;
-  downloadHasStarted: boolean;
   disableDownloadButton: boolean;
   downloadClickHandler: () => void;
   clearClickHandler: () => void;
@@ -13,8 +11,6 @@ interface DownloaderControlsProps {
 }
 
 const DownloaderControls = ({
-  hasActiveDownloads,
-  downloadHasStarted,
   disableDownloadButton,
   downloadClickHandler,
   clearClickHandler,
@@ -27,8 +23,15 @@ const DownloaderControls = ({
   const downloadableLength = downloadQueue.filter(
     (item) => item.status === 'idle'
   ).length;
+  const hasActiveDownloads = downloadQueue?.some(
+    (item) => item.status === 'downloading'
+  );
+  const downloadHasStarted = downloadQueue?.some(
+    (item) => item.status !== 'idle'
+  );
 
   const clearableLength = downloadQueue.length;
+
   return (
     <div className="flex justify-center mt-10">
       {downloadHasStarted && hasActiveDownloads ? (

@@ -7,13 +7,11 @@ describe('DownloaderControls Test', () => {
     expect(
       render(
         <DownloaderControls
-          hasActiveDownloads={false}
-          downloadHasStarted={false}
           disableDownloadButton={false}
           downloadClickHandler={jest.fn()}
           clearClickHandler={jest.fn()}
           cancelClickHandler={jest.fn()}
-          downloadQueueLength={0}
+          downloadQueue={[]}
         />
       )
     ).toBeTruthy();

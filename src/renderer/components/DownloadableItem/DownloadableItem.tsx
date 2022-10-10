@@ -8,8 +8,7 @@ import {
   DownloadItemControl,
   ProgressBar,
 } from 'renderer/components';
-import useDownload from 'renderer/hooks/useDownload';
-import useDownloaderStore from 'renderer/hooks/useDownloaderStore';
+import useDownloaderChannel from 'renderer/hooks/useDownloaderChannel';
 import useHover from 'renderer/hooks/useHover';
 
 interface DownloadableItemProps {
@@ -18,38 +17,53 @@ interface DownloadableItemProps {
 
 const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const [url] = useState(item.url);
-  const { progress, download, cancel, currentSongTitle, downloadableItem } =
-    useDownload(url);
-  const removeFromDownloadQueue = useDownloaderStore(
-    (state) => state.removeFromDownloadQueue
-  );
+  const {
+    startDownload,
+    getProgress,
+    getDownloadableItem,
+    cancelDownload,
+    removeFromDownloadQueue,
+  } = useDownloaderChannel();
+  const downloadableItem = getDownloadableItem(url);
+
+  const progress = Number(getProgress(url)).toFixed(2);
+
   // useEffectOnce(() => download(url));
   const downloadableRef = useRef(null);
   const isHover = useHover(downloadableRef);
 
-  const cancelClickHandler = () => cancel();
+  const cancelClickHandler = () => cancelDownload(url);
   const clearClickHandler = () => removeFromDownloadQueue(url);
-  const retryClickHandler = () => download(url);
+  const retryClickHandler = () => startDownload(url);
 
+  const currentSongTitle = downloadableItem?.metadata?.title || '';
+  const started = downloadableItem?.status !== 'idle';
   const cancelled = downloadableItem?.status === 'cancelled';
   const errored = downloadableItem?.status === 'error';
   const downloadedSuccessfully = downloadableItem?.status === 'downloaded';
 
-  const progressText = downloadedSuccessfully
+  const progressText = !started
+    ? `Click to start download`
+    : downloadedSuccessfully
     ? `${currentSongTitle} downloaded successfully`
     : cancelled
     ? `${currentSongTitle} cancelled`
     : errored
     ? `${currentSongTitle} could not be downloaded at this time`
     : currentSongTitle || 'Loading...';
-  const buttonText =
-    downloadedSuccessfully || errored || cancelled ? `Clear` : `Cancel`;
+  const buttonText = !started
+    ? 'Remove'
+    : downloadedSuccessfully || errored || cancelled
+    ? `Clear`
+    : `Cancel`;
   return (
     <div className="w-full flex flex-wrap space-y-2 relative mt-4">
       <ProgressBar
         progress={progress}
         text={progressText}
-        hidePercentage={downloadedSuccessfully || errored || cancelled}
+        hidePercentage={
+          !started || downloadedSuccessfully || errored || cancelled
+        }
       />
       <div
         ref={downloadableRef}
@@ -69,12 +83,26 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
                 </Button>
               </DownloadItemControl>
             ))}
+
+          {!started && (
+            <DownloadItemControl>
+              <Button
+                className="bg-green-400 text-white
+      hover:bg-green-300 h-6"
+                onClick={() => startDownload(url)}
+                disabled={!isHover}
+              >
+                Download
+              </Button>
+            </DownloadItemControl>
+          )}
+
           <DownloadItemControl>
             <Button
               className="bg-primary-red text-white
       hover:bg-red-400 h-6"
               onClick={
-                downloadedSuccessfully || errored || cancelled
+                downloadedSuccessfully || errored || cancelled || !started
                   ? clearClickHandler
                   : cancelClickHandler
               }

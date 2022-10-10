@@ -1,3 +1,5 @@
+import { MoreVideoDetails } from 'ytdl-core';
+
 export type DownloadStatus =
   | 'idle'
   | 'downloading'
@@ -7,6 +9,8 @@ export type DownloadStatus =
 export type DownloadQueueItem = {
   url: string;
   status: DownloadStatus;
+  metadata?: MoreVideoDetails;
+  cancel?: () => void;
 };
 
 export type DownloadQueue = DownloadQueueItem[];

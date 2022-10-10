@@ -1,5 +1,5 @@
 interface ProgressBarProps {
-  progress: number;
+  progress: number | string;
   text?: string;
   hidePercentage?: boolean;
 }
@@ -10,7 +10,7 @@ const ProgressBar = ({ progress, text, hidePercentage }: ProgressBarProps) => {
       <div
         className="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red"
         // style={{ width: `50%` }}
-        style={{ width: `${progress}%` }}
+        style={{ width: hidePercentage ? `0%` : `${progress}%` }}
       />
       <span className="absolute left-1 mix-blend-difference  text-white">
         {text}
