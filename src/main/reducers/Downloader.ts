@@ -45,6 +45,21 @@ const startDownload = (
   return state;
 };
 
+export const updateDownloadItemStatus = (
+  item: DownloadQueueItem,
+  status: DownloadQueueItem['status']
+) => {
+  setState((draft: StoreShape) => {
+    draft.downloadQueue.map((i) => {
+      if (i.url === item.url) {
+        i.status = status;
+      }
+      return i;
+    });
+    return draft;
+  });
+};
+
 const cancelDownload = (
   state: StoreShape,
   payload: DownloadQueueItem

@@ -49,7 +49,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
     : cancelled
     ? `${currentSongTitle} cancelled`
     : errored
-    ? `${currentSongTitle} could not be downloaded at this time`
+    ? `${currentSongTitle} could not start download`
     : currentSongTitle || 'Loading...';
   const buttonText = !started
     ? 'Remove'

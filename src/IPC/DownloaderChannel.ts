@@ -13,7 +13,10 @@ import {
   IpcRequest,
 } from '../interfaces';
 import { DownloaderActions } from '../main/actions/Downloader';
-import { DownloaderReducer } from '../main/reducers/Downloader';
+import {
+  DownloaderReducer,
+  updateDownloadItemStatus,
+} from '../main/reducers/Downloader';
 
 export default class DownloaderChannel implements IpcChannelInterface {
   getName(): string {
@@ -108,6 +111,7 @@ export default class DownloaderChannel implements IpcChannelInterface {
             }
           })
           .catch((error) => {
+            updateDownloadItemStatus(item, 'error');
             event.sender.send(
               responseChannel,
               errorResponse(this, 'Failed to start download')
