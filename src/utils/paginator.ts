@@ -1,8 +1,10 @@
+import { Paginator } from 'interfaces';
+
 const paginator = <T>(
   items: T[],
   currentPage: number,
   perPageItems: number
-) => {
+): Paginator<T> => {
   const page = currentPage || 1;
   const perPage = perPageItems || 10;
   const offset = (page - 1) * perPage;

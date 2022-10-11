@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Pagination } from 'react-headless-pagination';
 import {
   DownloadableItem,
   DownloadableItemTransition,
@@ -7,13 +6,14 @@ import {
   DownloaderControls,
   FileInput,
   InputError,
+  Pagination,
   TextInput,
 } from 'renderer/components';
 
 import { DownloadQueueItem } from 'interfaces';
 import React, { useEffect, useRef, useState } from 'react';
 import useDownloaderChannel from 'renderer/hooks/useDownloaderChannel';
-import { paginator, validateYoutubeLink } from 'utils';
+import { paginator as paginate, validateYoutubeLink } from 'utils';
 
 const Downloader = () => {
   const {
@@ -84,14 +84,14 @@ const Downloader = () => {
     console.log(selectedPage);
     setPage(selectedPage);
   };
-  const PER_PAGE = 3;
+  const PER_PAGE = 1;
 
-  const paginated = paginator<DownloadQueueItem>(
+  const paginator = paginate<DownloadQueueItem>(
     downloadQueue ?? [],
     page,
     PER_PAGE
   );
-  console.log(downloadQueue, paginated);
+  console.log(downloadQueue, paginator);
   return (
     <div className="max-w-[1500px] mt-10">
       <div className="flex items-baseline space-x-4 justify-around">
@@ -126,49 +126,17 @@ const Downloader = () => {
       <DownloadableItemTransitionContainer
         show={Boolean(downloadQueue?.length)}
       >
-        {paginated.data.map((item) => (
+        {paginator.data.map((item) => (
           <DownloadableItemTransition key={item.url}>
             <DownloadableItem item={item} />
           </DownloadableItemTransition>
         ))}
       </DownloadableItemTransitionContainer>
       <Pagination
-        totalPages={paginated.totalPages}
         currentPage={page}
-        setCurrentPage={handlePageChange}
-        className="flex items-center w-full h-10 text-sm select-none"
-        truncableText="..."
-        truncableClassName="w-10 px-0.5 text-center"
-      >
-        <Pagination.PrevButton
-          className={`flex items-center mr-2 text-gray-500 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none
-          ${
-            paginated.prePage
-              ? 'cursor-pointer'
-              : 'cursor-not-allowed opacity-50'
-          }`}
-        >
-          Previous
-        </Pagination.PrevButton>
-
-        <div className="flex items-center justify-center flex-grow">
-          <Pagination.PageButton
-            activeClassName="bg-primary-50 dark:bg-opacity-0 text-primary-600 dark:text-white"
-            inactiveClassName="text-gray-500"
-            className="flex items-center justify-center h-10 w-10 rounded-full cursor-pointer"
-          />
-        </div>
-        <Pagination.NextButton
-          className={`flex items-center mr-2 text-gray-500 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none
-                    ${
-                      paginated.nextPage
-                        ? 'cursor-pointer'
-                        : `cursor-not-allowed opacity-50`
-                    }`}
-        >
-          Next
-        </Pagination.NextButton>
-      </Pagination>
+        pageHandler={handlePageChange}
+        paginator={paginator}
+      />
       <DownloaderControls
         disableDownloadButton={disableDownloadButton}
         downloadClickHandler={downloadClickHandler}

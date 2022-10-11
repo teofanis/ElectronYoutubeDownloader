@@ -16,6 +16,7 @@ import { Layout } from 'renderer/components/Layout';
 import { Logo } from 'renderer/components/Logo';
 import { ProgressBar } from 'renderer/components/ProgressBar';
 import { TextInput } from 'renderer/components/TextInput';
+import { Pagination } from 'renderer/components/Pagination';
 // Automatic import of components
 export {
   Layout,
@@ -35,5 +36,6 @@ export {
   DownloadableItemTransitionContainer,
   DownloadableItemTransition,
   DownloaderControls,
+  Pagination,
   // Automatic export of components
 };
