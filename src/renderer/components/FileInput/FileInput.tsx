@@ -49,7 +49,7 @@ const FileInput = ({
           border
           border-blueGray-500
           font-semibold
-       "
+          "
       >
         {label}
       </button>
