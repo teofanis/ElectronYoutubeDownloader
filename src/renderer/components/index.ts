@@ -17,6 +17,7 @@ import { Logo } from 'renderer/components/Logo';
 import { ProgressBar } from 'renderer/components/ProgressBar';
 import { TextInput } from 'renderer/components/TextInput';
 import { Pagination } from 'renderer/components/Pagination';
+import { ArrowIcon } from 'renderer/components/ArrowIcon';
 // Automatic import of components
 export {
   Layout,
@@ -37,5 +38,6 @@ export {
   DownloadableItemTransition,
   DownloaderControls,
   Pagination,
+  ArrowIcon,
   // Automatic export of components
 };
