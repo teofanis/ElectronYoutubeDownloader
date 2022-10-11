@@ -132,11 +132,13 @@ const Downloader = () => {
           </DownloadableItemTransition>
         ))}
       </DownloadableItemTransitionContainer>
-      <Pagination
-        currentPage={page}
-        pageHandler={handlePageChange}
-        paginator={paginator}
-      />
+      <div className="w-full flex justify-center pt-10">
+        <Pagination
+          currentPage={page}
+          pageHandler={handlePageChange}
+          paginator={paginator}
+        />
+      </div>
       <DownloaderControls
         disableDownloadButton={disableDownloadButton}
         downloadClickHandler={downloadClickHandler}
