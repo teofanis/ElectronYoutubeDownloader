@@ -28,7 +28,7 @@ const Downloader = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileError, setFileError] = useState('');
   const [urlError, setUrlError] = useState('');
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const textInputRef = useRef<HTMLInputElement>(null);
 
   const urlBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -81,6 +81,7 @@ const Downloader = () => {
     Boolean(urlError) || downloadQueue?.length === 0;
 
   const handlePageChange = (selectedPage: number) => {
+    console.log(selectedPage);
     setPage(selectedPage);
   };
   const PER_PAGE = 3;
@@ -90,7 +91,7 @@ const Downloader = () => {
     page,
     PER_PAGE
   );
-  console.log(paginated);
+  console.log(downloadQueue, paginated);
   return (
     <div className="max-w-[1500px] mt-10">
       <div className="flex items-baseline space-x-4 justify-around">
@@ -133,7 +134,7 @@ const Downloader = () => {
       </DownloadableItemTransitionContainer>
       <Pagination
         totalPages={paginated.totalPages}
-        currentPage={paginated.page}
+        currentPage={page}
         setCurrentPage={handlePageChange}
         className="flex items-center w-full h-10 text-sm select-none"
         truncableText="..."
