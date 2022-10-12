@@ -61,7 +61,7 @@ const Downloader = () => {
       data.forEach(addToDownloadQueue);
       setSelectedFile(file);
     } else {
-      setFileError('Failed to download from file.');
+      setFileError('Failed to read from file.');
     }
   };
 
