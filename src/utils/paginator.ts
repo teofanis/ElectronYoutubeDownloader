@@ -10,7 +10,6 @@ const paginator = <T>(
   const offset = (page - 1) * perPage;
   const paginatedItems = items.slice(offset).slice(0, perPageItems);
   const totalPages = Math.ceil(items.length / perPage);
-
   return {
     page,
     perPage,

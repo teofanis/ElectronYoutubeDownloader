@@ -81,17 +81,18 @@ const Downloader = () => {
     Boolean(urlError) || downloadQueue?.length === 0;
 
   const handlePageChange = (selectedPage: number) => {
-    console.log(selectedPage);
-    setPage(selectedPage);
+    setPage(selectedPage + 1);
   };
-  const PER_PAGE = 1;
+  const PER_PAGE = 5;
 
   const paginator = paginate<DownloadQueueItem>(
     downloadQueue ?? [],
     page,
     PER_PAGE
   );
-  console.log(downloadQueue, paginator);
+
+  const showPagination = downloadQueue?.length > PER_PAGE;
+
   return (
     <div className="max-w-[1500px] mt-10">
       <div className="flex items-baseline space-x-4 justify-around">
@@ -127,16 +128,21 @@ const Downloader = () => {
         show={Boolean(downloadQueue?.length)}
       >
         {paginator.data.map((item) => (
-          <DownloadableItemTransition key={item.url}>
+          <DownloadableItemTransition key={`${item.url}-${page}`}>
             <DownloadableItem item={item} />
           </DownloadableItemTransition>
         ))}
       </DownloadableItemTransitionContainer>
-      <div className="w-full flex justify-center pt-10">
+      <div
+        className={`w-full flex justify-center ${
+          showPagination ? 'pt-10' : ''
+        }`}
+      >
         <Pagination
-          currentPage={page}
+          currentPage={page - 1}
           pageHandler={handlePageChange}
           paginator={paginator}
+          show={showPagination}
         />
       </div>
       <DownloaderControls

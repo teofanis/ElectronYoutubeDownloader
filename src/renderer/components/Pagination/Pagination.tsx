@@ -1,4 +1,5 @@
 import { Paginator } from 'interfaces';
+import { useEffect } from 'react';
 import { Pagination as HeadlessPagination } from 'react-headless-pagination';
 import { ArrowIcon } from 'renderer/components';
 
@@ -6,19 +7,30 @@ interface PaginationProps {
   currentPage: number;
   pageHandler: (page: number) => void;
   paginator: Paginator<unknown>;
+  show?: boolean;
 }
 
 const Pagination = ({
   currentPage,
   pageHandler,
   paginator,
+  show,
 }: PaginationProps) => {
-  const { totalPages, prePage, nextPage } = paginator;
+  const { totalPages, prePage, nextPage, total, page } = paginator;
+  useEffect(() => {
+    if (page > totalPages) {
+      pageHandler(page - 2);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total]);
+  if (!show) return null;
   return (
     <HeadlessPagination
       totalPages={totalPages}
       currentPage={currentPage}
       setCurrentPage={pageHandler}
+      truncableText="..."
+      truncableClassName="w-10 px-0.5"
       className="inline-flex -space-x-px"
     >
       <HeadlessPagination.PrevButton
@@ -46,7 +58,6 @@ const Pagination = ({
           rounded-r-lg border
            bg-primary-black border-gray-700
            text-gray-400 hover:bg-gray-700 hover:text-white
-
                     ${
                       nextPage
                         ? 'cursor-pointer'
@@ -59,4 +70,7 @@ const Pagination = ({
   );
 };
 
+Pagination.defaultProps = {
+  show: true,
+};
 export default Pagination;
