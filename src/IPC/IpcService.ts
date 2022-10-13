@@ -23,7 +23,7 @@ export default class IpcService {
     ipcRenderer.send(channel, request);
 
     return new Promise((resolve) => {
-      return ipcRenderer.once(responseChannel, (event, response) =>
+      return ipcRenderer.once(responseChannel, (_event, response) =>
         resolve(response)
       );
     });
