@@ -11,17 +11,17 @@ In use by family members and close friends.
 ## Demo
 
 ![electronV004demo](https://user-images.githubusercontent.com/47872542/193476486-8f3b3db3-e99b-45ab-b802-fc82849542a2.gif)
- 
+
 ## Pending Items / Improvements
 
 - ~~Download multiple songs from TXT file~~
+- ~~Pagination~~
 - Expose More Options from ytbl (video, quality, etc..)
 - Improve Design / UX
 - Add a settings page
   - Path to save downloads
   - Dark Mode
-- Search / Download ?
-- One-click download chrome extension ?
+- Search / Download / Browse page
 - Refactor to follow best practises + write tests
 - Multilingual
 

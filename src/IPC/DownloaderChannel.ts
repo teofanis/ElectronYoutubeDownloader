@@ -107,7 +107,6 @@ export default class DownloaderChannel implements IpcChannelInterface {
                 successResponse(this, 'Downloading', response)
               );
             } else {
-              updateDownloadItemStatus(item, 'error');
               event.sender.send(
                 responseChannel,
                 errorResponse(this, 'Failed to start download')
