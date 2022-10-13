@@ -1,7 +1,6 @@
 import { Paginator } from 'interfaces';
 import { useEffect } from 'react';
-import { Pagination as HeadlessPagination } from 'react-headless-pagination';
-import { ArrowIcon } from 'renderer/components';
+import { ArrowIcon, HeadlessPagination } from 'renderer/components';
 
 interface PaginationProps {
   currentPage: number;

@@ -3,3 +3,4 @@ export * from './IpcChannelInterface';
 export * from './IpcService';
 export * from './Paginator';
 export * from './Store';
+export * from './HeadlessPagination';
