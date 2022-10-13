@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IPaginationProps, IUsePagination } from 'interfaces';
 import React from 'react';
 

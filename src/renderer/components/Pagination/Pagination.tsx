@@ -31,6 +31,8 @@ const Pagination = ({
       truncableText="..."
       truncableClassName="w-10 px-0.5"
       className="inline-flex -space-x-px"
+      edgePageCount={2}
+      middlePagesSiblingCount={1}
     >
       <HeadlessPagination.PrevButton
         className={`
