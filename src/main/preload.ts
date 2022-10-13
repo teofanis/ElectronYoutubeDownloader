@@ -1,26 +1,25 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-
+/* eslint-disable import/no-named-as-default-member */
+import { contextBridge, ipcRenderer } from 'electron';
+import { IpcRequest } from 'interfaces';
+import { IpcService } from 'IPC';
+import store from 'main/store';
 import { CONSTANTS } from '../utils/constants';
 
 export type Channels = keyof typeof CONSTANTS | 'ipc-example';
 
-contextBridge.exposeInMainWorld('electron', {
-  ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
-      ipcRenderer.send(channel, args);
-    },
-    on(channel: Channels, func: (...args: unknown[]) => void) {
-      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
-        func(...args);
-      ipcRenderer.on(channel, subscription);
+const service = new IpcService(ipcRenderer);
 
-      return () => ipcRenderer.removeListener(channel, subscription);
+contextBridge.exposeInMainWorld('electron', {
+  store: {
+    getState: store.getState,
+    setState: store.setState,
+    subscribe: (listener: (state: unknown, description?: string) => void) => {
+      return store.subscribe(listener);
     },
-    once(channel: Channels, func: (...args: unknown[]) => void) {
-      ipcRenderer.once(channel, (_event, ...args) => func(...args));
-    },
-    removeAllListeners(channel?: Channels | string | null) {
-      ipcRenderer.removeAllListeners(channel || '');
+  },
+  ipc: {
+    send: <T>(channel: string, request: IpcRequest) => {
+      return service.send<T>(channel, request);
     },
   },
 });

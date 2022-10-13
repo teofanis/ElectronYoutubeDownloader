@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -12,9 +13,8 @@ import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
-import { downloadMP3 } from '../libs/youtube-dl';
-import { getLinkChannelName, validateYoutubeLink } from '../utils';
-import { CONSTANTS } from '../utils/constants';
+import { IpcChannelInterface } from '../interfaces';
+import { DownloaderChannel } from '../IPC';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -27,12 +27,6 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -127,6 +121,13 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+const registerIpcChannels = (ipcChannels: IpcChannelInterface[]) => {
+  ipcChannels.forEach((channel) =>
+    ipcMain.on(channel.getName(), (event, request) =>
+      channel.handle(event, request)
+    )
+  );
+};
 
 app
   .whenReady()
@@ -140,46 +141,8 @@ app
   })
   .catch(console.log);
 
-ipcMain.on(CONSTANTS.DOWNLOAD, (event, arg) => {
-  const { url } = arg;
-  const replyEvent = getLinkChannelName(url, CONSTANTS.DOWNLOAD);
+registerIpcChannels([new DownloaderChannel()]);
 
-  // eslint-disable-next-line promise/catch-or-return
-  downloadMP3(url, mainWindow as BrowserWindow)
-    .then((res) => {
-      event.reply(replyEvent, { status: res.status });
-    })
-    .catch((error) => {
-      event.reply(replyEvent, { status: 'error', message: error });
-    });
-});
-
-ipcMain.on(CONSTANTS.DOWNLOAD_FILE, (event) => {
-  const { dialog } = require('electron');
-  const selectedFile = dialog.showOpenDialogSync({
-    properties: ['openFile'],
-    filters: [{ name: 'Text Files', extensions: ['txt'] }],
-  });
-  if (!selectedFile?.length) {
-    return;
-  }
-  let reply = {
-    status: 'success',
-    file: path.basename(selectedFile[0]),
-    data: [],
-  };
-  try {
-    const fs = require('fs');
-    const data = fs.readFileSync(selectedFile[0], 'utf8');
-    const urls = data.trim().split('\n');
-    const validatedUrls = urls
-      .map((url: string) => url.trim())
-      .filter((url: string) => validateYoutubeLink(url));
-    reply = { ...reply, data: validatedUrls };
-  } catch (err) {
-    console.error(err);
-    reply = { ...reply, status: 'error' };
-  } finally {
-    event.reply(CONSTANTS.DOWNLOAD_FILE, reply);
-  }
-});
+// store.subscribe((state) => {
+//   // console.log(state);
+// });

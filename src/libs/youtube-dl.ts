@@ -1,29 +1,20 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app } from 'electron';
 /* eslint-disable import/prefer-default-export */
 import fs from 'fs';
 import path from 'path';
 import ytdl from 'ytdl-core';
-import { getLinkChannelName, sanitizeFileName } from '../utils';
-import { CONSTANTS } from '../utils/constants';
+import {
+  getDownloadableItem,
+  updateDownloadProgress,
+  updateMetadata,
+} from '../main/reducers/Downloader';
+import { sanitizeFileName } from '../utils';
 
-export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
-  let isCancelled = false;
-  const progressUpdateEvent = getLinkChannelName(
-    youtubeLink,
-    CONSTANTS.PROGRESS_UPDATE
-  );
-  const currentMetadataEvent = getLinkChannelName(
-    youtubeLink,
-    CONSTANTS.CURRENT_DOWNLOAD_META_DATA
-  );
-  const cancelEvent = getLinkChannelName(
-    youtubeLink,
-    CONSTANTS.CANCEL_DOWNLOAD
-  );
-  ipcMain.on(cancelEvent, () => {
-    isCancelled = true;
-  });
+export async function getYoutubeLinkInfo(youtubeLink: string) {
+  return ytdl.getInfo(youtubeLink);
+}
 
+export async function downloadMP3(youtubeLink: string) {
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
   return new Promise<{ status: string }>((resolve, reject) => {
     return (
@@ -50,20 +41,20 @@ export async function downloadMP3(youtubeLink: string, win: BrowserWindow) {
           };
 
           audioStream.on('response', (response) => {
+            const item = getDownloadableItem(youtubeLink);
             const fileSize = response.headers['content-length'];
-            win.webContents.send(currentMetadataEvent, {
-              fileSize,
-              title,
-              videoDetails,
-            });
+            if (!item?.metadata) {
+              updateMetadata(youtubeLink, videoDetails);
+            }
             let downloaded = 0;
             response.on('data', (data: string | any[]) => {
-              if (isCancelled) {
+              const downloadableItem = getDownloadableItem(youtubeLink);
+              if (downloadableItem?.status === 'cancelled') {
                 cancelDownload();
               }
               downloaded += data.length;
               const percentage = ((downloaded / fileSize) * 100).toFixed(2);
-              win.webContents.send(progressUpdateEvent, percentage);
+              updateDownloadProgress(youtubeLink, Number(percentage));
             });
           });
 

@@ -1,16 +1,23 @@
-import { Channels } from 'main/preload';
+import { IpcRequest, PromisedIpcResponse } from 'interfaces';
 
 declare global {
   interface Window {
     electron: {
-      ipcRenderer: {
-        removeAllListeners(channel?: Channels | string | null): void;
-        sendMessage(channel: Channels, args: unknown[]): void;
-        on(
+      store: {
+        getState: <T>() => T;
+        setState: <T>(
+          recipe: (draft: T) => void,
+          description?: string | undefined
+        ) => T;
+        subscribe: <T>(
+          listener: (state: T, description?: string | undefined) => void
+        ) => () => void;
+      };
+      ipc: {
+        send: <T>(
           channel: string,
-          func: (...args: unknown[]) => void
-        ): (() => void) | undefined;
-        once(channel: string, func: (...args: unknown[]) => void): void;
+          request: IpcRequest
+        ) => PromisedIpcResponse<T>;
       };
     };
   }
