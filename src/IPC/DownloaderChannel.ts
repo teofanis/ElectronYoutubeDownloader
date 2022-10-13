@@ -3,7 +3,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable import/no-named-as-default-member */
 import path from 'path';
-import { downloadMP3 } from '../libs/youtube-dl';
+import { downloadMP3, getYoutubeLinkInfo } from '../libs/youtube-dl';
 import { setState } from '../main/store';
 import { errorResponse, successResponse, validateYoutubeLink } from '../utils';
 /* eslint-disable class-methods-use-this */
@@ -16,6 +16,7 @@ import { DownloaderActions } from '../main/actions/Downloader';
 import {
   DownloaderReducer,
   updateDownloadItemStatus,
+  updateMetadata,
 } from '../main/reducers/Downloader';
 
 export default class DownloaderChannel implements IpcChannelInterface {
@@ -75,6 +76,7 @@ export default class DownloaderChannel implements IpcChannelInterface {
       CLEAR_DOWNLOAD_QUEUE,
       REMOVE_FROM_DOWNLOAD_QUEUE,
       DOWNLOAD_FROM_TEXT_FILE,
+      LOAD_LINK_METADATA,
     } = DownloaderActions;
     switch (action) {
       case ADD_TO_DOWNLOAD_QUEUE:
@@ -99,11 +101,13 @@ export default class DownloaderChannel implements IpcChannelInterface {
         downloadMP3(item.url)
           .then((response) => {
             if (response.status === 'success') {
+              updateDownloadItemStatus(item, 'downloaded');
               event.sender.send(
                 responseChannel,
                 successResponse(this, 'Downloading', response)
               );
             } else {
+              updateDownloadItemStatus(item, 'error');
               event.sender.send(
                 responseChannel,
                 errorResponse(this, 'Failed to start download')
@@ -148,6 +152,25 @@ export default class DownloaderChannel implements IpcChannelInterface {
             errorResponse(this, 'Failed to start download')
           );
         }
+        break;
+      case LOAD_LINK_METADATA:
+        const { url } = payload as DownloadQueueItem;
+        getYoutubeLinkInfo(url)
+          .then((response) => {
+            const { videoDetails } = response;
+            updateMetadata(url, videoDetails);
+            event.sender.send(
+              responseChannel,
+              successResponse(this, 'Info Retrieved', videoDetails)
+            );
+          })
+          .catch((error) => {
+            console.log(error);
+            event.sender.send(
+              responseChannel,
+              errorResponse(this, 'Failed to get youtube link info')
+            );
+          });
         break;
       default:
         break;

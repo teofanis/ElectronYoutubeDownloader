@@ -1,7 +1,8 @@
+/* eslint-disable promise/always-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-lone-blocks */
 import { DownloadQueueItem } from 'interfaces';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Button,
   DownloadableItemControls,
@@ -17,18 +18,29 @@ interface DownloadableItemProps {
 
 const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const [url] = useState(item.url);
+  const [loading, setLoading] = useState(false);
   const {
     startDownload,
     getProgress,
     getDownloadableItem,
     cancelDownload,
     removeFromDownloadQueue,
+    loadLinkMetadata,
   } = useDownloaderChannel();
   const downloadableItem = getDownloadableItem(url);
 
+  useEffect(() => {
+    if (downloadableItem && !downloadableItem?.metadata) {
+      setLoading(true);
+      loadLinkMetadata(url);
+    } else if (loading) {
+      setLoading(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [downloadableItem]);
+
   const progress = Number(getProgress(url)).toFixed(2);
 
-  // useEffectOnce(() => download(url));
   const downloadableRef = useRef(null);
   const isHover = useHover(downloadableRef);
 
@@ -42,8 +54,10 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const errored = downloadableItem?.status === 'error';
   const downloadedSuccessfully = downloadableItem?.status === 'downloaded';
 
-  const progressText = !started
-    ? `Click to start download`
+  const progressText = loading
+    ? 'Loading...'
+    : !started
+    ? `${currentSongTitle} click to start download`
     : downloadedSuccessfully
     ? `${currentSongTitle} downloaded successfully`
     : cancelled

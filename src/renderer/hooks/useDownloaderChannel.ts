@@ -1,4 +1,4 @@
-import { DownloadQueue } from 'interfaces';
+import { DownloadQueue, DownloadQueueItem } from 'interfaces';
 import { DownloaderActions } from 'main/actions/Downloader';
 import { useCallback } from 'react';
 import { useIpc } from 'renderer/context/AppContext';
@@ -20,6 +20,7 @@ const useDownloaderChannel = () => {
     send(DownloaderActions.ADD_TO_DOWNLOAD_QUEUE, {
       url,
       status: 'idle',
+      metadata: null,
     });
   };
 
@@ -64,6 +65,15 @@ const useDownloaderChannel = () => {
   const selectFromFile = async () => {
     return send(DownloaderActions.DOWNLOAD_FROM_TEXT_FILE, {});
   };
+
+  const loadLinkMetadata = async (url: string) => {
+    const item = getDownloadableItem(url);
+    return send<DownloadQueueItem['metadata']>(
+      DownloaderActions.LOAD_LINK_METADATA,
+      item
+    );
+  };
+
   return {
     startDownload,
     selectFromFile,
@@ -76,6 +86,7 @@ const useDownloaderChannel = () => {
     downloadQueue,
     getProgress,
     getDownloadableItem,
+    loadLinkMetadata,
   };
 };
 

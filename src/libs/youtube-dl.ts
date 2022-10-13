@@ -10,6 +10,10 @@ import {
 } from '../main/reducers/Downloader';
 import { sanitizeFileName } from '../utils';
 
+export async function getYoutubeLinkInfo(youtubeLink: string) {
+  return ytdl.getInfo(youtubeLink);
+}
+
 export async function downloadMP3(youtubeLink: string) {
   const DEFAULT_DOWNLOAD_FOLDER = app.getPath('downloads');
   return new Promise<{ status: string }>((resolve, reject) => {
@@ -37,8 +41,11 @@ export async function downloadMP3(youtubeLink: string) {
           };
 
           audioStream.on('response', (response) => {
+            const item = getDownloadableItem(youtubeLink);
             const fileSize = response.headers['content-length'];
-            updateMetadata(youtubeLink, videoDetails);
+            if (!item?.metadata) {
+              updateMetadata(youtubeLink, videoDetails);
+            }
             let downloaded = 0;
             response.on('data', (data: string | any[]) => {
               const downloadableItem = getDownloadableItem(youtubeLink);
