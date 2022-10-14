@@ -6,8 +6,6 @@
 Decided to have some fun and learn a bit of electron.
 The use case was to turn my youtube downloader script into a usable desktop app.
 
-In use by family members and close friends.
-
 ## Demo
 
 ![electronV005](https://user-images.githubusercontent.com/47872542/195666060-e0da23ad-dd08-4892-9ff8-ed8e5c18ca42.gif)
