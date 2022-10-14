@@ -1,5 +1,5 @@
-import { createSharedStore } from 'electron-shared-state';
 import { DownloadQueue } from 'interfaces';
+import { createSharedStore } from '../libs/electron-shared-state';
 
 const initialState = {
   downloadQueue: [] as DownloadQueue,

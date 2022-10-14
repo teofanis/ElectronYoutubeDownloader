@@ -3690,11 +3690,6 @@ electron-rebuild@^3.2.9:
     tar "^6.0.5"
     yargs "^17.0.1"
 
-electron-shared-state@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/electron-shared-state/-/electron-shared-state-1.0.0.tgz#67dd15d0061414888c3e30e81dbd739ccdac7a10"
-  integrity sha512-MTrniWxrWUek9FfBNgS+wJHBtTtnx7qd3gPlL+0JEwJ9KMDSSDNV5JjDfGDPAJt5/c9Jpsvd80/GxvWA2txpZw==
-
 electron-to-chromium@^1.4.251:
   version "1.4.261"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.261.tgz#31f14ad60c6f95bec404a77a2fd5e1962248e112"
@@ -5315,6 +5310,11 @@ immediate@~3.0.5:
   version "3.0.6"
   resolved "https://registry.npmjs.org/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==
+
+immer@^9.0.15:
+  version "9.0.15"
+  resolved "https://registry.npmjs.org/immer/-/immer-9.0.15.tgz#0b9169e5b1d22137aba7d43f8a81a495dd1b62dc"
+  integrity sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==
 
 immutable@^4.0.0:
   version "4.1.0"

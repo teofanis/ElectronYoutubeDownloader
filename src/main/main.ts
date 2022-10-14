@@ -52,6 +52,13 @@ const installExtensions = async () => {
     )
     .catch(console.log);
 };
+const registerIpcChannels = (ipcChannels: IpcChannelInterface[]) => {
+  ipcChannels.forEach((channel) =>
+    ipcMain.on(channel.getName(), (event, request) =>
+      channel.handle(event, request)
+    )
+  );
+};
 
 const createWindow = async () => {
   if (isDebug) {
@@ -121,27 +128,20 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-const registerIpcChannels = (ipcChannels: IpcChannelInterface[]) => {
-  ipcChannels.forEach((channel) =>
-    ipcMain.on(channel.getName(), (event, request) =>
-      channel.handle(event, request)
-    )
-  );
-};
 
 app
   .whenReady()
   .then(() => {
     createWindow();
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
+    registerIpcChannels([new DownloaderChannel()]);
   })
   .catch(console.log);
-
-registerIpcChannels([new DownloaderChannel()]);
 
 // store.subscribe((state) => {
 //   // console.log(state);
