@@ -3,7 +3,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable import/no-named-as-default-member */
 import path from 'path';
-import { downloadMP3, getYoutubeLinkInfo } from '../libs/youtube-dl';
+import { getYoutubeLinkInfo } from '../libs/youtube-dl';
 import { setState } from '../main/store';
 import { errorResponse, successResponse, validateYoutubeLink } from '../utils';
 /* eslint-disable class-methods-use-this */
@@ -13,11 +13,7 @@ import {
   IpcRequest,
 } from '../interfaces';
 import { DownloaderActions } from '../main/actions/Downloader';
-import {
-  DownloaderReducer,
-  updateDownloadItemStatus,
-  updateMetadata,
-} from '../main/reducers/Downloader';
+import { DownloaderReducer, updateMetadata } from '../main/reducers/Downloader';
 
 export default class DownloaderChannel implements IpcChannelInterface {
   getName(): string {
@@ -98,29 +94,7 @@ export default class DownloaderChannel implements IpcChannelInterface {
       case START_DOWNLOAD:
         const item = payload as DownloadQueueItem;
         setState((state) => DownloaderReducer[START_DOWNLOAD](state, item));
-        downloadMP3(item.url)
-          .then((response) => {
-            if (response.status === 'success') {
-              updateDownloadItemStatus(item, 'downloaded');
-              event.sender.send(
-                responseChannel,
-                successResponse(this, 'Downloading', response)
-              );
-            } else {
-              event.sender.send(
-                responseChannel,
-                errorResponse(this, 'Failed to start download')
-              );
-            }
-          })
-          .catch((error) => {
-            updateDownloadItemStatus(item, 'error');
-            event.sender.send(
-              responseChannel,
-              errorResponse(this, 'Failed to start download')
-            );
-            console.log(error);
-          });
+
         break;
       case CANCEL_DOWNLOAD:
         setState((state) =>

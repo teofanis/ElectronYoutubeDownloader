@@ -4,6 +4,7 @@ import { createSharedStore } from '../libs/electron-shared-state';
 const initialState = {
   downloadQueue: [] as DownloadQueue,
   downloadProgressMap: {} as Record<string, number>,
+  QUEUE_LIMIT: 5,
 };
 const store = createSharedStore(initialState);
 

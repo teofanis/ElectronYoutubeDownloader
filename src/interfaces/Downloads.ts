@@ -1,11 +1,12 @@
 import { MoreVideoDetails } from 'ytdl-core';
 
 export type DownloadStatus =
-  | 'idle'
-  | 'downloading'
-  | 'cancelled'
-  | 'downloaded'
-  | 'error';
+  | 'idle' // added not acted upon
+  | 'enqueued' // has been enqueued and will be proceeded in order
+  | 'downloading' // is currently downloading
+  | 'cancelled' // has been cancelled
+  | 'downloaded' // has been downloaded
+  | 'error'; // has encountered an error
 export type DownloadQueueItem = {
   url: string;
   status: DownloadStatus;

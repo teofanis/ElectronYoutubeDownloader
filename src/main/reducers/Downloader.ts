@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable promise/always-return */
 import { DownloadQueue, DownloadQueueItem } from 'interfaces';
+import { downloadMP3 } from '../../libs/youtube-dl';
 import { getState, setState, StoreShape } from '../store';
 /* eslint-disable import/prefer-default-export */
 import { DownloaderActions } from '../actions/Downloader';
+
+const currentActiveDownloads = (item: DownloadQueueItem) =>
+  item.status === 'downloading';
 
 const pushIfNotPresent = (
   item: DownloadQueueItem,
@@ -35,16 +41,54 @@ const startDownload = (
   state: StoreShape,
   payload: DownloadQueueItem
 ): StoreShape => {
+  const activeDownloads = state.downloadQueue.filter(
+    currentActiveDownloads
+  ).length;
+  const queueLimitIsReached = activeDownloads >= state.QUEUE_LIMIT;
+  let alteredItem = null;
   // Electron-store uses IMMER under the hood and state here is taking care of the immutability
   state.downloadQueue.map((item) => {
     if (item.url === payload.url) {
-      item.status = 'downloading';
+      item.status = queueLimitIsReached ? 'enqueued' : 'downloading';
+      alteredItem = item;
     }
     return item;
   });
+  if (!queueLimitIsReached && alteredItem) {
+    triggerDownload(alteredItem);
+  } else {
+    checkAdvanceWorkQueue(state);
+  }
   return state;
 };
 
+const triggerDownload = (item: DownloadQueueItem) => {
+  console.log('TRIGGERING');
+  downloadMP3(item.url)
+    .then((response) => {
+      if (response.status === 'success') {
+        console.log('SUCCESS');
+        updateDownloadItemStatus(item, 'downloaded');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      updateDownloadItemStatus(item, 'error');
+    });
+};
+
+const checkAdvanceWorkQueue = (state: StoreShape) => {
+  const { downloadQueue, QUEUE_LIMIT } = state;
+  const activeDownloads = downloadQueue.filter(currentActiveDownloads).length;
+  console.log(activeDownloads < QUEUE_LIMIT, activeDownloads, QUEUE_LIMIT);
+  if (activeDownloads < QUEUE_LIMIT) {
+    const nextItem = downloadQueue.find((item) => item.status === 'enqueued');
+    console.log('FOUND NEW QUEUE ITEM', nextItem);
+    if (nextItem) {
+      triggerDownload(nextItem);
+    }
+  }
+};
 export const updateDownloadItemStatus = (
   item: DownloadQueueItem,
   status: DownloadQueueItem['status']
@@ -58,6 +102,8 @@ export const updateDownloadItemStatus = (
     });
     return draft;
   });
+
+  checkAdvanceWorkQueue(getState());
 };
 
 const cancelDownload = (
@@ -74,7 +120,7 @@ const cancelDownload = (
   if (state.downloadProgressMap?.[payload.url]) {
     delete state.downloadProgressMap[payload.url];
   }
-
+  checkAdvanceWorkQueue(state);
   return state;
 };
 
