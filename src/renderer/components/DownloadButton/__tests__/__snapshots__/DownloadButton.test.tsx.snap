@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadButton Test matches snapshot 1`] = `
+<div>
+  <button
+    class="
+       rounded-lg
+       font-semibold py-2 px-4 inline-flex items-center cursor-pointer
+       transition duration-500 ease-in-out transform hover:-translate-y-1 focus:outline-none
+       hover:shadow-lg
+       focus:shadow-outline
+       focus:ring-2
+       ring-offset-current ring-offset-2
+      ring-gray-700
+      disabled:opacity-50 disabled:cursor-not-allowed
+      bg-gray-300
+      hover:bg-gray-100"
+  >
+    <svg
+      class="w-4 h-4 mr-2"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"
+      />
+    </svg>
+    <span>
+      test
+    </span>
+  </button>
+</div>
+`;

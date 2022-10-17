@@ -17,6 +17,11 @@ describe('CancelButton Test', () => {
     );
   });
 
+  it('can be disabled', () => {
+    const { container } = render(<CancelButton text="test" disabled />);
+    expect(container.querySelector('button')).toBeDisabled();
+  });
+
   it('can be clicked', () => {
     const onClick = jest.fn();
     const { container } = render(
