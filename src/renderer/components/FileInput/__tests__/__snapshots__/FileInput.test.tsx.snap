@@ -1,0 +1,706 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileInput Test should handle click 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              undefined"
+      >
+        <button
+          class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+          type="button"
+        >
+          Choose a file
+        </button>
+        <input
+          style="display: none;"
+          type="hidden"
+          value=""
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              undefined"
+    >
+      <button
+        class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+        type="button"
+      >
+        Choose a file
+      </button>
+      <input
+        style="display: none;"
+        type="hidden"
+        value=""
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`FileInput Test should render correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              undefined"
+      >
+        <button
+          class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+          type="button"
+        >
+          Choose a file
+        </button>
+        <input
+          style="display: none;"
+          type="hidden"
+          value=""
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              undefined"
+    >
+      <button
+        class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+        type="button"
+      >
+        Choose a file
+      </button>
+      <input
+        style="display: none;"
+        type="hidden"
+        value=""
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`FileInput Test should render correctly with className 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              test-class"
+      >
+        <button
+          class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+          type="button"
+        >
+          Choose a file
+        </button>
+        <input
+          style="display: none;"
+          type="hidden"
+          value=""
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              test-class"
+    >
+      <button
+        class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+        type="button"
+      >
+        Choose a file
+      </button>
+      <input
+        style="display: none;"
+        type="hidden"
+        value=""
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`FileInput Test should render correctly with errored 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              border-red-500 right-2 outline-red-600 shadow-outline-red-500 
+              undefined"
+      >
+        <button
+          class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+          type="button"
+        >
+          Choose a file
+        </button>
+        <input
+          style="display: none;"
+          type="hidden"
+          value=""
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              border-red-500 right-2 outline-red-600 shadow-outline-red-500 
+              undefined"
+    >
+      <button
+        class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+        type="button"
+      >
+        Choose a file
+      </button>
+      <input
+        style="display: none;"
+        type="hidden"
+        value=""
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`FileInput Test should render correctly with value 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              undefined"
+      >
+        <button
+          class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+          type="button"
+        >
+          Choose a file
+        </button>
+        <span
+          class="pl-2"
+        >
+          test
+        </span>
+        <input
+          style="display: none;"
+          type="hidden"
+          value="test"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="text-black flex-1
+              placeholder-gray-800
+              mt-2
+              text-base transition duration-500 ease-in-out transform border-transparent rounded-lg
+              focus:border-blueGray-500
+              bg-gray-300
+              focus:bg-gray-100
+              focus:outline-none
+              focus:shadow-outline
+              focus:ring-2
+            ring-gray-700
+              ring-offset-current ring-offset-2
+              
+              undefined"
+    >
+      <button
+        class="
+          bg-gray-400
+          hover:bg-gray-300
+          py-2.5
+          rounded-lg px-4 z-10
+          text-base
+        text-black
+          border
+          border-blueGray-500
+          font-semibold
+          "
+        type="button"
+      >
+        Choose a file
+      </button>
+      <span
+        class="pl-2"
+      >
+        test
+      </span>
+      <input
+        style="display: none;"
+        type="hidden"
+        value="test"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

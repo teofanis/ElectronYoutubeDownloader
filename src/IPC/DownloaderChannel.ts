@@ -3,8 +3,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable import/no-named-as-default-member */
 import path from 'path';
-import { downloadMP3, getYoutubeLinkInfo } from '../libs/youtube-dl';
-import { setState } from '../main/store';
+import { getYoutubeLinkInfo } from '../libs/youtube-dl';
 import { errorResponse, successResponse, validateYoutubeLink } from '../utils';
 /* eslint-disable class-methods-use-this */
 import {
@@ -13,11 +12,7 @@ import {
   IpcRequest,
 } from '../interfaces';
 import { DownloaderActions } from '../main/actions/Downloader';
-import {
-  DownloaderReducer,
-  updateDownloadItemStatus,
-  updateMetadata,
-} from '../main/reducers/Downloader';
+import { DownloaderReducer, updateMetadata } from '../main/reducers/Downloader';
 
 export default class DownloaderChannel implements IpcChannelInterface {
   getName(): string {
@@ -80,63 +75,21 @@ export default class DownloaderChannel implements IpcChannelInterface {
     } = DownloaderActions;
     switch (action) {
       case ADD_TO_DOWNLOAD_QUEUE:
-        setState((state) =>
-          DownloaderReducer[ADD_TO_DOWNLOAD_QUEUE](
-            state,
-            payload as DownloadQueueItem
-          )
-        );
+        DownloaderReducer[ADD_TO_DOWNLOAD_QUEUE](payload as DownloadQueueItem);
         break;
       case REMOVE_FROM_DOWNLOAD_QUEUE:
-        setState((state) =>
-          DownloaderReducer[REMOVE_FROM_DOWNLOAD_QUEUE](
-            state,
-            payload as DownloadQueueItem
-          )
+        DownloaderReducer[REMOVE_FROM_DOWNLOAD_QUEUE](
+          payload as DownloadQueueItem
         );
         break;
       case START_DOWNLOAD:
-        const item = payload as DownloadQueueItem;
-        setState((state) => DownloaderReducer[START_DOWNLOAD](state, item));
-        downloadMP3(item.url)
-          .then((response) => {
-            if (response.status === 'success') {
-              updateDownloadItemStatus(item, 'downloaded');
-              event.sender.send(
-                responseChannel,
-                successResponse(this, 'Downloading', response)
-              );
-            } else {
-              event.sender.send(
-                responseChannel,
-                errorResponse(this, 'Failed to start download')
-              );
-            }
-          })
-          .catch((error) => {
-            updateDownloadItemStatus(item, 'error');
-            event.sender.send(
-              responseChannel,
-              errorResponse(this, 'Failed to start download')
-            );
-            console.log(error);
-          });
+        DownloaderReducer[START_DOWNLOAD](payload as DownloadQueueItem);
         break;
       case CANCEL_DOWNLOAD:
-        setState((state) =>
-          DownloaderReducer[CANCEL_DOWNLOAD](
-            state,
-            payload as DownloadQueueItem
-          )
-        );
+        DownloaderReducer[CANCEL_DOWNLOAD](payload as DownloadQueueItem);
         break;
       case CLEAR_DOWNLOAD_QUEUE:
-        setState((state) =>
-          DownloaderReducer[CLEAR_DOWNLOAD_QUEUE](
-            state,
-            {} as DownloadQueueItem
-          )
-        );
+        DownloaderReducer[CLEAR_DOWNLOAD_QUEUE](payload as DownloadQueueItem);
         break;
       case DOWNLOAD_FROM_TEXT_FILE:
         const { status, file, data } = this.handleFileDialog();
@@ -157,7 +110,8 @@ export default class DownloaderChannel implements IpcChannelInterface {
         getYoutubeLinkInfo(url)
           .then((response) => {
             const { videoDetails } = response;
-            updateMetadata(url, videoDetails);
+            const { title, author, lengthSeconds } = videoDetails;
+            updateMetadata(url, { title, author, lengthSeconds });
             event.sender.send(
               responseChannel,
               successResponse(this, 'Info Retrieved', videoDetails)

@@ -47,7 +47,7 @@ const useDownloaderChannel = () => {
     );
   };
   const stopAllDownloads = () => {
-    const cancellableStatuses = ['downloading', 'idle'];
+    const cancellableStatuses = ['downloading', 'idle', 'enqueued'];
     downloadQueue.forEach(({ url, status }) => {
       if (cancellableStatuses.includes(status)) {
         cancelDownload(url);

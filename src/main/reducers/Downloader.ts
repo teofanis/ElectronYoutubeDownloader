@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable promise/always-return */
 import { DownloadQueue, DownloadQueueItem } from 'interfaces';
+import { downloadMP3 } from '../../libs/youtube-dl';
 import { getState, setState, StoreShape } from '../store';
 /* eslint-disable import/prefer-default-export */
 import { DownloaderActions } from '../actions/Downloader';
+
+const currentActiveDownloads = (item: DownloadQueueItem) =>
+  item.status === 'downloading';
 
 const pushIfNotPresent = (
   item: DownloadQueueItem,
@@ -9,42 +15,78 @@ const pushIfNotPresent = (
   array: DownloadQueue
 ): boolean => array.findIndex((i) => i.url === item.url) === index;
 
-const addToDownloadQueue = (
-  state: StoreShape,
-  payload: DownloadQueueItem
-): StoreShape => {
-  return {
-    ...state,
-    downloadQueue: [...state.downloadQueue, payload].filter(pushIfNotPresent),
-  };
-};
-
-const removeFromDownloadQueue = (
-  state: StoreShape,
-  payload: DownloadQueueItem
-): StoreShape => {
-  return {
-    ...state,
-    downloadQueue: [...state.downloadQueue, payload].filter(
-      (item) => item.url !== payload.url
-    ),
-  };
-};
-
-const startDownload = (
-  state: StoreShape,
-  payload: DownloadQueueItem
-): StoreShape => {
-  // Electron-store uses IMMER under the hood and state here is taking care of the immutability
-  state.downloadQueue.map((item) => {
-    if (item.url === payload.url) {
-      item.status = 'downloading';
-    }
-    return item;
+const addToDownloadQueue = (payload: DownloadQueueItem): StoreShape => {
+  return setState((draft: StoreShape) => {
+    return {
+      ...draft,
+      downloadQueue: [...draft.downloadQueue, payload].filter(pushIfNotPresent),
+    };
   });
+};
+
+const removeFromDownloadQueue = (payload: DownloadQueueItem): StoreShape => {
+  return setState((draft: StoreShape) => {
+    return {
+      ...draft,
+      downloadQueue: [...draft.downloadQueue, payload].filter(
+        (item) => item.url !== payload.url
+      ),
+    };
+  });
+};
+
+const startDownload = (payload: DownloadQueueItem): StoreShape => {
+  const activeDownloads = getState().downloadQueue.filter(
+    currentActiveDownloads
+  ).length;
+  let alteredItem = null;
+  const queueLimitIsReached = activeDownloads >= getState().QUEUE_LIMIT;
+
+  const state = setState((draft: StoreShape) => {
+    draft.downloadQueue.map((item) => {
+      if (item.url === payload.url) {
+        item.status = queueLimitIsReached ? 'enqueued' : 'downloading';
+        alteredItem = item;
+      }
+      return item;
+    });
+  });
+  if (!queueLimitIsReached && alteredItem) {
+    triggerDownload(payload);
+  } else {
+    checkAdvanceWorkQueue();
+  }
   return state;
 };
 
+const triggerDownload = async (item: DownloadQueueItem) => {
+  console.log('TRIGGERING');
+  downloadMP3(item.url)
+    .then((response) => {
+      if (response.status === 'success') {
+        console.log('SUCCESS');
+        updateDownloadItemStatus(item, 'downloaded');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      updateDownloadItemStatus(item, 'error');
+    });
+};
+
+const checkAdvanceWorkQueue = async () => {
+  const { downloadQueue, QUEUE_LIMIT } = getState();
+  const activeDownloads = downloadQueue.filter(currentActiveDownloads).length;
+  console.log(activeDownloads < QUEUE_LIMIT, activeDownloads, QUEUE_LIMIT);
+  if (activeDownloads < QUEUE_LIMIT) {
+    const nextItem = downloadQueue.find((item) => item.status === 'enqueued');
+    console.log('FOUND NEW QUEUE ITEM', nextItem);
+    if (nextItem) {
+      updateDownloadItemStatus(nextItem, 'downloading');
+      triggerDownload(nextItem);
+    }
+  }
+};
 export const updateDownloadItemStatus = (
   item: DownloadQueueItem,
   status: DownloadQueueItem['status']
@@ -58,37 +100,37 @@ export const updateDownloadItemStatus = (
     });
     return draft;
   });
+
+  checkAdvanceWorkQueue();
 };
 
-const cancelDownload = (
-  state: StoreShape,
-  payload: DownloadQueueItem
-): StoreShape => {
-  state.downloadQueue.map((item) => {
-    if (item.url === payload.url) {
-      item.status = 'cancelled';
+const cancelDownload = (payload: DownloadQueueItem): StoreShape => {
+  const state = setState((draft: StoreShape) => {
+    draft.downloadQueue.map((item) => {
+      if (item.url === payload.url) {
+        item.status = 'cancelled';
+      }
+      return item;
+    });
+    if (draft.downloadProgressMap?.[payload.url]) {
+      delete draft.downloadProgressMap[payload.url];
     }
-    return item;
   });
-
-  if (state.downloadProgressMap?.[payload.url]) {
-    delete state.downloadProgressMap[payload.url];
-  }
-
+  checkAdvanceWorkQueue();
   return state;
 };
 
-const clearDownloadQueue = (state: StoreShape): StoreShape => {
-  return {
-    ...state,
-    downloadQueue: [],
-    downloadProgressMap: {},
-  };
+const clearDownloadQueue = (): StoreShape => {
+  return setState((draft: StoreShape) => {
+    draft.downloadQueue = [];
+    draft.downloadProgressMap = {};
+    return draft;
+  });
 };
 
 export const updateMetadata = (
   url: string,
-  metadata: DownloadQueueItem['metadata']
+  metadata: Partial<DownloadQueueItem['metadata']>
 ) => {
   setState((draft) => {
     draft.downloadQueue.map((item) => {

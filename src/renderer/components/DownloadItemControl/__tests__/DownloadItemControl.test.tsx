@@ -4,13 +4,13 @@ import { render } from '@testing-library/react';
 import { DownloadItemControl } from 'renderer/components';
 
 describe('DownloadItemControl Test', () => {
-  it('should render', () => {
+  it('should render correctly', () => {
     expect(
       render(
         <Transition show>
           <DownloadItemControl>Test</DownloadItemControl>
         </Transition>
       )
-    ).toBeTruthy();
+    ).toMatchSnapshot();
   });
 });

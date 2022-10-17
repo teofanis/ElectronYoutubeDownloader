@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloaderControls Test should render correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="flex justify-center mt-10"
+      >
+        <button
+          class="
+       rounded-lg
+       font-semibold py-2 px-4 inline-flex items-center cursor-pointer
+       transition duration-500 ease-in-out transform hover:-translate-y-1 focus:outline-none
+       hover:shadow-lg
+       focus:shadow-outline
+       focus:ring-2
+       ring-offset-current ring-offset-2
+      ring-gray-700
+      disabled:opacity-50 disabled:cursor-not-allowed
+      bg-gray-300
+      hover:bg-gray-100"
+        >
+          <svg
+            class="w-4 h-4 mr-2"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"
+            />
+          </svg>
+          <span>
+            Download
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="flex justify-center mt-10"
+    >
+      <button
+        class="
+       rounded-lg
+       font-semibold py-2 px-4 inline-flex items-center cursor-pointer
+       transition duration-500 ease-in-out transform hover:-translate-y-1 focus:outline-none
+       hover:shadow-lg
+       focus:shadow-outline
+       focus:ring-2
+       ring-offset-current ring-offset-2
+      ring-gray-700
+      disabled:opacity-50 disabled:cursor-not-allowed
+      bg-gray-300
+      hover:bg-gray-100"
+      >
+        <svg
+          class="w-4 h-4 mr-2"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"
+          />
+        </svg>
+        <span>
+          Download
+        </span>
+      </button>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

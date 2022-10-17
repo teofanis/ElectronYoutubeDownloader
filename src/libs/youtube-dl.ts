@@ -23,7 +23,7 @@ export async function downloadMP3(youtubeLink: string) {
         // eslint-disable-next-line promise/always-return
         .then((resource) => {
           const { videoDetails } = resource;
-          const { title } = videoDetails;
+          const { title, author, lengthSeconds } = videoDetails;
           const audioStream = ytdl.downloadFromInfo(resource, {
             quality: 'highestaudio',
           });
@@ -44,7 +44,7 @@ export async function downloadMP3(youtubeLink: string) {
             const item = getDownloadableItem(youtubeLink);
             const fileSize = response.headers['content-length'];
             if (!item?.metadata) {
-              updateMetadata(youtubeLink, videoDetails);
+              updateMetadata(youtubeLink, { title, author, lengthSeconds });
             }
             let downloaded = 0;
             response.on('data', (data: string | any[]) => {

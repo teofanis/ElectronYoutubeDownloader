@@ -49,15 +49,21 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const retryClickHandler = () => startDownload(url);
 
   const currentSongTitle = downloadableItem?.metadata?.title || '';
+  const enqueued = downloadableItem?.status === 'enqueued';
   const started = downloadableItem?.status !== 'idle';
   const cancelled = downloadableItem?.status === 'cancelled';
   const errored = downloadableItem?.status === 'error';
+  const downloading = downloadableItem?.status === 'downloading';
   const downloadedSuccessfully = downloadableItem?.status === 'downloaded';
 
   const progressText = loading
     ? 'Loading...'
     : !started
     ? `${currentSongTitle} click to start download`
+    : enqueued
+    ? `${currentSongTitle} queued for download`
+    : downloading
+    ? `Downloading ${currentSongTitle}`
     : downloadedSuccessfully
     ? `${currentSongTitle} downloaded successfully`
     : cancelled
