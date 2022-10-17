@@ -5,7 +5,7 @@ interface LayoutProps {
 }
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="flex flex-wrap w-full bg-primary-black">
+    <div className="flex flex-wrap w-full bg-primary-black overflow-x-hidden">
       <div className="container mx-auto">{children}</div>
     </div>
   );
