@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Pagination } from 'renderer/components';
 
 describe('Pagination Test', () => {
-  it('should render', () => {
+  it('should render correctly', () => {
     expect(
       render(
         <Pagination
@@ -20,6 +20,6 @@ describe('Pagination Test', () => {
           }}
         />
       )
-    ).toBeTruthy();
+    ).toMatchSnapshot();
   });
 });
