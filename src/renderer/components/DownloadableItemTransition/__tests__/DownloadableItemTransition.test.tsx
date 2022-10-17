@@ -11,6 +11,6 @@ describe('DownloadableItemTransition Test', () => {
           <DownloadableItemTransition>Test</DownloadableItemTransition>
         </Transition>
       )
-    ).toBeTruthy();
+    ).toMatchSnapshot();
   });
 });
