@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressBar Test should render correctly 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+      >
+        <div
+          class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+          style="width: 0%;"
+        />
+        <span
+          class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+        />
+        <span
+          class="absolute right-1 mix-blend-difference text-white"
+        >
+          0
+          %
+        </span>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+    >
+      <div
+        class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+        style="width: 0%;"
+      />
+      <span
+        class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+      />
+      <span
+        class="absolute right-1 mix-blend-difference text-white"
+      >
+        0
+        %
+      </span>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`ProgressBar Test should render correctly with hidePercentage 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+      >
+        <div
+          class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+          style="width: 0%;"
+        />
+        <span
+          class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+    >
+      <div
+        class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+        style="width: 0%;"
+      />
+      <span
+        class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`ProgressBar Test should render correctly with text & percentage 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+      >
+        <div
+          class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+          style="width: 50%;"
+        />
+        <span
+          class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+        >
+          text
+        </span>
+        <span
+          class="absolute right-1 mix-blend-difference text-white"
+        >
+          50
+          %
+        </span>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+    >
+      <div
+        class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+        style="width: 50%;"
+      />
+      <span
+        class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+      >
+        text
+      </span>
+      <span
+        class="absolute right-1 mix-blend-difference text-white"
+      >
+        50
+        %
+      </span>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`ProgressBar Test should render correctly with text and hidePercentage 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+      >
+        <div
+          class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+          style="width: 0%;"
+        />
+        <span
+          class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+        >
+          text
+        </span>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="w-full relative bg-gray-200 rounded-md h-6 dark:bg-gray-700 overflow-hidden"
+    >
+      <div
+        class="absolute order-last top-0 h-6 rounded-md animate-gradient-x bg-gradient-to-r from-pink-500 via-orange-400 to-primary-red "
+        style="width: 0%;"
+      />
+      <span
+        class="absolute left-1 mix-blend-difference  text-white whitespace-nowrap text-ellipsis overflow-hidden"
+      >
+        text
+      </span>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
