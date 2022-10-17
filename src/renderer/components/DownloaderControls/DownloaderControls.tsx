@@ -17,14 +17,14 @@ const DownloaderControls = ({
   cancelClickHandler,
   downloadQueue,
 }: DownloaderControlsProps) => {
-  const cancelableLength = downloadQueue.filter(
-    (item) => item.status === 'downloading'
+  const cancelableLength = downloadQueue.filter((item) =>
+    ['downloading', 'enqueued'].includes(item.status)
   ).length;
   const downloadableLength = downloadQueue.filter(
     (item) => item.status === 'idle'
   ).length;
-  const hasActiveDownloads = downloadQueue?.some(
-    (item) => item.status === 'downloading'
+  const hasActiveDownloads = downloadQueue?.some((item) =>
+    ['downloading', 'enqueued'].includes(item.status)
   );
   const downloadHasStarted = downloadQueue?.some(
     (item) => item.status !== 'idle'

@@ -10,7 +10,7 @@ export type DownloadStatus =
 export type DownloadQueueItem = {
   url: string;
   status: DownloadStatus;
-  metadata?: MoreVideoDetails;
+  metadata?: Partial<MoreVideoDetails>;
 };
 
 export type DownloadQueue = DownloadQueueItem[];

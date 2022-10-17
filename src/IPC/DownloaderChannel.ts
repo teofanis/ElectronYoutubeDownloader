@@ -110,7 +110,8 @@ export default class DownloaderChannel implements IpcChannelInterface {
         getYoutubeLinkInfo(url)
           .then((response) => {
             const { videoDetails } = response;
-            updateMetadata(url, videoDetails);
+            const { title, author, lengthSeconds } = videoDetails;
+            updateMetadata(url, { title, author, lengthSeconds });
             event.sender.send(
               responseChannel,
               successResponse(this, 'Info Retrieved', videoDetails)

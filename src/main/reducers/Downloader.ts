@@ -82,6 +82,7 @@ const checkAdvanceWorkQueue = async () => {
     const nextItem = downloadQueue.find((item) => item.status === 'enqueued');
     console.log('FOUND NEW QUEUE ITEM', nextItem);
     if (nextItem) {
+      updateDownloadItemStatus(nextItem, 'downloading');
       triggerDownload(nextItem);
     }
   }
@@ -129,7 +130,7 @@ const clearDownloadQueue = (): StoreShape => {
 
 export const updateMetadata = (
   url: string,
-  metadata: DownloadQueueItem['metadata']
+  metadata: Partial<DownloadQueueItem['metadata']>
 ) => {
   setState((draft) => {
     draft.downloadQueue.map((item) => {

@@ -91,6 +91,21 @@ const Downloader = () => {
     PER_PAGE
   );
 
+  const activeStatuses = ['downloading', 'enqueued'];
+  const currentPageHasNoActiveStatuses = !paginator?.data?.some(
+    (item) => item.status && activeStatuses.includes(item.status)
+  );
+  const nextPageHasActiveStatuses = paginate<DownloadQueueItem>(
+    downloadQueue ?? [],
+    page + 1,
+    PER_PAGE
+  )?.data?.some((item) => item.status && activeStatuses.includes(item.status));
+
+  useEffect(() => {
+    if (currentPageHasNoActiveStatuses && nextPageHasActiveStatuses) {
+      setPage((currentPage) => currentPage + 1);
+    }
+  }, [currentPageHasNoActiveStatuses, nextPageHasActiveStatuses]);
   const showPagination = downloadQueue?.length > PER_PAGE;
 
   return (
