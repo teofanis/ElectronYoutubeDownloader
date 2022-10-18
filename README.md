@@ -26,4 +26,5 @@ The use case was to turn my youtube downloader script into a usable desktop app.
 ## Acknowledgements
 
 - [Electron React Boilerplate](https://github.com/electron-react-boilerplate/electron-react-boilerplate)
-- [https://github.com/fent/node-ytdl-core](https://github.com/fent/node-ytdl-core)
+- [node-ytdl-core](https://github.com/fent/node-ytdl-core)
+- [ffmpeg-static](https://github.com/eugeneware/ffmpeg-static)
