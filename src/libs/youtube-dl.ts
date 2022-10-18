@@ -92,6 +92,7 @@ export async function downloadMP3(youtubeLink: string) {
             exec(convertToMp3, (err: any) => {
               if (err) {
                 console.error(err);
+                fs.unlink(downloadPath, () => {});
                 reject(new Error(`Failed to convert ${title}`));
                 return;
               }
