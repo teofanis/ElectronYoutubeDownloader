@@ -1,8 +1,9 @@
+/* eslint-disable promise/no-nesting */
+/* eslint-disable promise/always-return */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable global-require */
 import { app } from 'electron';
 /* eslint-disable import/prefer-default-export */
-import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 import ytdl from 'ytdl-core';
@@ -13,7 +14,18 @@ import {
 } from '../main/reducers/Downloader';
 import { sanitizeFileName } from '../utils';
 
-const ffmpeg = require('ffmpeg-static');
+const ffmpeg = require('fluent-ffmpeg');
+const ffmpegPath = require('ffmpeg-static').replace(
+  'app.asar',
+  'app.asar.unpacked'
+);
+const ffprobePath = require('ffprobe-static').path.replace(
+  'app.asar',
+  'app.asar.unpacked'
+);
+
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath);
 
 export async function getYoutubeLinkInfo(youtubeLink: string) {
   return ytdl.getInfo(youtubeLink);
@@ -75,30 +87,52 @@ export async function downloadMP3(youtubeLink: string) {
 
           audioStream.on('end', () => {
             fileStream.close();
-            const shell = require('any-shell-escape');
-            const convertToMp3 = shell([
-              ffmpeg,
-              '-y',
-              '-v',
-              'error',
-              '-i',
-              downloadPath,
-              '-acodec',
-              'mp3',
-              '-format',
-              'mp3',
-              destinationPath,
-            ]);
-            exec(convertToMp3, (err: any) => {
-              if (err) {
-                console.error(err);
+            // const shell = require('any-shell-escape');
+            // const convertToMp3 = shell([
+            //   ffmpeg,
+            //   '-y',
+            //   '-v',
+            //   'error',
+            //   '-i',
+            //   downloadPath,
+            //   '-acodec',
+            //   'mp3',
+            //   '-format',
+            //   'mp3',
+            //   destinationPath,
+            // ]);
+            // exec(convertToMp3, (err: any) => {
+            //   if (err) {
+            //     console.error(err);
+            //     fs.unlink(downloadPath, () => {});
+            //     reject(new Error(`Failed to convert ${title}`));
+            //     return;
+            //   }
+            //   fs.unlink(downloadPath, () => {});
+            //   resolve({ status: 'success' });
+            // });
+
+            const command = ffmpeg()
+              .input(downloadPath)
+              .output(destinationPath)
+              .outputFormat('mp3')
+              .noVideo()
+              .audioCodec('libmp3lame')
+              .audioBitrate(128)
+              .on('progress', (progress) => {
+                console.log(`Processing: ${progress.percent}% done`);
+              })
+              .on('end', () => {
+                fs.unlink(downloadPath, () => {});
+                resolve({ status: 'success' });
+              })
+              .on('error', (error: any) => {
+                console.error(error);
                 fs.unlink(downloadPath, () => {});
                 reject(new Error(`Failed to convert ${title}`));
-                return;
-              }
-              fs.unlink(downloadPath, () => {});
-              resolve({ status: 'success' });
-            });
+              });
+
+            command.run();
           });
           audioStream.pipe(fileStream);
         })
