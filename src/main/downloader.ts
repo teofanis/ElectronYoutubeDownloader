@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { ConversionFunction } from 'interfaces';
-import { ytdl } from 'ytdl-core';
+import ytdl from 'ytdl-core';
 import { convertToMP3 } from '../libs/ffmpeg';
 import { getYoutubeLinkInfo, youtubeDownload } from '../libs/youtube-dl';
 import { sanitizeFileName } from '../utils/index';
