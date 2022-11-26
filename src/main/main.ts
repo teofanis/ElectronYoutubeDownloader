@@ -80,6 +80,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       sandbox: false,
+      nodeIntegration: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
@@ -128,7 +129,6 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
 app
   .whenReady()
   .then(() => {
