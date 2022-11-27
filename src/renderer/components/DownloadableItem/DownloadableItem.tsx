@@ -55,6 +55,7 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
   const errored = downloadableItem?.status === 'error';
   const downloading = downloadableItem?.status === 'downloading';
   const downloadedSuccessfully = downloadableItem?.status === 'downloaded';
+  const converting = downloadableItem?.status === 'converting';
 
   const progressText = loading
     ? 'Loading...'
@@ -66,6 +67,8 @@ const DownloadableItem = ({ item }: DownloadableItemProps) => {
     ? `Downloading ${currentSongTitle}`
     : downloadedSuccessfully
     ? `${currentSongTitle} downloaded successfully`
+    : converting
+    ? `Converting ${currentSongTitle}`
     : cancelled
     ? `${currentSongTitle} cancelled`
     : errored

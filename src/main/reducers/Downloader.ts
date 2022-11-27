@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable promise/always-return */
 import { DownloadQueue, DownloadQueueItem } from 'interfaces';
-import { downloadMP3 } from '../../libs/youtube-dl';
+import { downloadMP3 } from '../downloader';
 import { getState, setState, StoreShape } from '../store';
 /* eslint-disable import/prefer-default-export */
 import { DownloaderActions } from '../actions/Downloader';

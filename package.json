@@ -110,12 +110,12 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.2",
-    "any-shell-escape": "^0.1.1",
     "classnames": "^2.3.2",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
     "electron-updater": "^5.2.1",
-    "ffmpeg-static": "^5.1.0",
+    "ffmpeg-static-electron": "^2.0.3",
+    "fluent-ffmpeg": "^2.1.2",
     "immer": "^9.0.15",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -204,7 +204,12 @@
     "productName": "ElectronYoutubeDownloader",
     "appId": "org.erb.ElectronYoutubeDownloader",
     "asar": true,
-    "asarUnpack": "**\\*.{node,dll}",
+    "asarUnpack": [
+      "**\\*.{node,dll}",
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json"
+    ],
     "files": [
       "dist",
       "node_modules",
