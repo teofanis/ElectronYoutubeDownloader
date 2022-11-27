@@ -89,7 +89,6 @@ const downloadMP3 = async (youtubeLink: string) => {
     quality: 'highestaudio',
     filter: 'audioonly',
   };
-
   return getYoutubeLinkInfo(youtubeLink).then((info) => {
     const { title } = info.videoDetails;
     const downloadPath = getDownloadPath(

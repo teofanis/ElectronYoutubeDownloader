@@ -1,6 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable @typescript-eslint/ban-types */
-const ffmpegPath = require('ffmpeg-static-electron').path;
+const ffmpegPath = require('ffmpeg-static-electron').path.replace(
+  'app.asar',
+  'app.asar.unpacked'
+);
 const ffmpeg = require('fluent-ffmpeg');
 
 ffmpeg.setFfmpegPath(ffmpegPath);
