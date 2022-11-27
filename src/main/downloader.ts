@@ -6,6 +6,7 @@ import { getYoutubeLinkInfo, youtubeDownload } from '../libs/youtube-dl';
 import { sanitizeFileName } from '../utils/index';
 import {
   getDownloadableItem,
+  updateDownloadItemStatus,
   updateDownloadProgress,
   updateMetadata,
 } from './reducers/Downloader';
@@ -61,6 +62,10 @@ const download = (
 
     stream.on('end', () => {
       fileStream.close();
+      const downloadableItem = getDownloadableItem(youtubeLink);
+      if (downloadableItem) {
+        updateDownloadItemStatus(downloadableItem, 'converting');
+      }
       conversionFunction(
         downloadPath,
         destinationPath,

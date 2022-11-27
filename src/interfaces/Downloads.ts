@@ -6,6 +6,7 @@ export type DownloadStatus =
   | 'downloading' // is currently downloading
   | 'cancelled' // has been cancelled
   | 'downloaded' // has been downloaded
+  | 'converting' // is currently converting
   | 'error'; // has encountered an error
 export type DownloadQueueItem = {
   url: string;
