@@ -1,5 +1,11 @@
 # Youtube Downloader Electron
 
+> [!WARNING]
+> This repository has been **archived** and is no longer maintained.
+>  
+> It has been **superseded by**: https://github.com/teofanis/ybdownloader
+
+
 [![CodeQL](https://github.com/teofanis/ElectronYoutubeDownloader/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/teofanis/ElectronYoutubeDownloader/actions/workflows/codeql-analysis.yml)
 [![Tests](https://github.com/teofanis/ElectronYoutubeDownloader/actions/workflows/test.yml/badge.svg)](https://github.com/teofanis/ElectronYoutubeDownloader/actions/workflows/test.yml)
 
